@@ -1,0 +1,65 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "proyecto-algoritmos"
+dynamic = ["version"]
+description = ''
+readme = "README.md"
+requires-python = ">=3.8"
+license = "MIT"
+keywords = []
+authors = [
+  { name = "Juan Pablo Arroyo", email = "jpbusiarroyo@gmail.com" },
+]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: Implementation :: CPython",
+  "Programming Language :: Python :: Implementation :: PyPy",
+]
+dependencies = [
+  "pandas"
+]
+
+[project.urls]
+Documentation = "https://github.com/Juan Pablo Arroyo/proyecto-algoritmos#readme"
+Issues = "https://github.com/Juan Pablo Arroyo/proyecto-algoritmos/issues"
+Source = "https://github.com/Juan Pablo Arroyo/proyecto-algoritmos"
+
+[tool.hatch.version]
+path = "src/proyecto_algoritmos/__about__.py"
+
+[tool.hatch.envs.types]
+extra-dependencies = [
+  "mypy>=1.0.0",
+]
+[tool.hatch.envs.types.scripts]
+check = "mypy --install-types --non-interactive {args:src/proyecto_algoritmos tests}"
+
+[tool.coverage.run]
+source_pkgs = ["proyecto_algoritmos", "tests"]
+branch = true
+parallel = true
+omit = [
+  "src/proyecto_algoritmos/__about__.py",
+]
+
+[tool.coverage.paths]
+proyecto_algoritmos = ["src/proyecto_algoritmos", "*/proyecto-algoritmos/src/proyecto_algoritmos"]
+tests = ["tests", "*/proyecto-algoritmos/tests"]
+
+[tool.coverage.report]
+exclude_lines = [
+  "no cov",
+  "if __name__ == .__main__.:",
+  "if TYPE_CHECKING:",
+]
+
+
