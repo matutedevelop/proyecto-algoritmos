@@ -87,11 +87,22 @@ class note :
 
 
 
-   def get_resume(self) -> list :
+   def get_resume(self) -> tuple :
       resume = []
+      # build up the description of the pedido , aka product (see resumen cotizacion on the mock up)
       for product in self.products:
-          resume.append((product.quantity))
+          description = product.glass_type + product.dimensions
+          if product.sandlasted: description += ' ,arenado'
+          if product.canteado: description += ' ,canteado'
+          if product.barrenos > 0:  description += ',' + str(product.barrenos) + 'barrenos'
+          if not product.includes_glass: description += ', (maq)'
+          # calculate unitary price of product
 
+          unit_price = self.total / self.quantity
+
+          resume.append((product.quantity,description,unit_price,self.total))
+
+      return (resume,self.note_total)
 
    def pack(Self) -> list :
         return [Self.date,Self.id,Self.client,Self.note_total,Self.type]
