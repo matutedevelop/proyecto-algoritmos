@@ -9,7 +9,6 @@ def csv_writer(arr,dir):
 
 directions = pd.read_json(r'C:\Users\fofoy\OneDrive\clarovent\Base_de_datos\direcciones.json',typ='series').to_dict()
 
-print(directions)
 
-# csv_writer(["eduardo"],directions['ruta_clientes'])
+csv_writer(["eduardo"],directions['ruta_clientes'])
 

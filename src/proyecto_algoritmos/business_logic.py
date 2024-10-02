@@ -18,33 +18,19 @@ def get_date():
 
 # classes
 
-class note :
-   def __init__(self, id:int, client:str, amount=0 , typ="efectivo" ) -> None:
-       self.date = get_date()
-       self.id = id
-       self.client = client
-       self.amount = amount
-       self.type = typ
-   def pack(Self) -> list :
-      
-        return [Self.date,Self.id,Self.client,Self.amount,Self.type]
-
-
 class Pedido:
 
-
-
-    def __init__(self, id_nota: int, cantidad: int, tipo_de_vidrio: str, largo: float, ancho: float, vidrio: bool, barrenos: int, tipo_barrenos: str , arenado: bool, canteado: bool, extra: float) -> None:
-        self.id_nota = id_nota
-        self.cantidad = cantidad
-        self.tipo_de_vidrio = tipo_de_vidrio
-        self.dimensiones = str(largo) + 'x' + str(ancho)
-        self.m2 = largo * ancho
-        self.ml = 2 * largo + 2 * ancho
-        self.vidrio = vidrio
+    def __init__(self, id_note: int, quantity: int, glass_type: str, length: float, width: float, includes_glass: bool, barrenos: int, barrenos_type: str , sandblasted: bool, canteado: bool, extra: float) -> None:
+        self.id_note = id_note
+        self.quantity = quantity
+        self.glass_type = glass_type
+        self.dimensions = str(length) + 'x' + str(width)
+        self.m2 = length * width
+        self.ml = 2 * length + 2 * width
+        self.includes_glass = includes_glass
         self.barrenos = barrenos
-        self.tipo_barrenos = tipo_barrenos
-        self.arenado = arenado
+        self.barrenos_type = barrenos_type
+        self.sandblasted = sandblasted
         self.canteado = canteado
         self.extra = extra
 
@@ -53,12 +39,12 @@ class Pedido:
     def calculate_price(self):
 
         total = 0
-        if self.vidrio == True: total += self.m2 * glass_prices[self.tipo_de_vidrio]
-        if self.arenado == True: total += self.m2 * process_prices["arenado"]
-        if self.canteado == True: total += self.ml * process_prices["canto"][self.tipo_de_vidrio[-1]]
-        total += self.barrenos * process_prices[self.tipo_barrenos]
+        if self.is_glass == True: total += self.m2 * glass_prices[self.glass_type]
+        if self.sandblasted == True: total += self.m2 * process_prices["arenado"]
+        if self.canteado == True: total += self.ml * process_prices["canto"][self.glass_type[-1]]
+        total += self.barrenos * process_prices[self.barrenos_type]
         total += self.extra
-        total *= self.cantidad
+        total *= self.quantity
 
         self.total = total
 
@@ -68,3 +54,46 @@ class Pedido:
 
     def pack(self) -> list:
         return []
+
+
+
+
+
+
+class note :
+   def __init__(self, id:int, client:str, products = [], typ="efectivo"  ) -> None:
+       
+       if len(products) == 0:
+           raise ValueError("No se puede crear una lista sin pedidos")
+       
+       if not all(isinstance(products,Pedido) for product in products):
+            raise ValueError("Todos los elementos de la lista deben ser de tipo producto")
+
+       else: 
+        self.date = get_date()
+        self.id = id
+        self.client = client
+        self.type = typ
+        self.products = products
+    # calcular el total de la lista
+        note_total = 0
+        for product in products:
+            product.calculate_price()
+            note_total += product.total
+
+
+        self.note_total = note_total
+
+
+
+
+   def get_resume(self) -> list :
+      resume = []
+      for product in self.products:
+          resume.append((product.quantity))
+
+
+   def pack(Self) -> list :
+        return [Self.date,Self.id,Self.client,Self.note_total,Self.type]
+
+
