@@ -8,7 +8,7 @@ directions = pd.read_json(r'C:\Users\fofoy\OneDrive\clarovent\Base_de_datos\dire
 price_table = pd.read_json(directions["ruta_precios"]).to_dict()
 
 process_prices = price_table["proceso"]
-glass_prices = price_table["vidirio"]
+glass_prices = price_table["vidrio"]
 
 
 
@@ -39,7 +39,7 @@ class Pedido:
     def calculate_price(self):
 
         total = 0
-        if self.is_glass == True: total += self.m2 * glass_prices[self.glass_type]
+        if self.includes_glass == True: total += self.m2 * glass_prices[self.glass_type]
         if self.sandblasted == True: total += self.m2 * process_prices["arenado"]
         if self.canteado == True: total += self.ml * process_prices["canto"][self.glass_type[-1]]
         total += self.barrenos * process_prices[self.barrenos_type]
@@ -66,7 +66,7 @@ class note :
        if len(products) == 0:
            raise ValueError("No se puede crear una lista sin pedidos")
        
-       if not all(isinstance(products,Pedido) for product in products):
+       if not all(isinstance(product,Pedido) for product in products):
             raise ValueError("Todos los elementos de la lista deben ser de tipo producto")
 
        else: 
@@ -92,13 +92,13 @@ class note :
       # build up the description of the pedido , aka product (see resumen cotizacion on the mock up)
       for product in self.products:
           description = product.glass_type + product.dimensions
-          if product.sandlasted: description += ' ,arenado'
+          if product.sandblasted: description += ' ,arenado'
           if product.canteado: description += ' ,canteado'
           if product.barrenos > 0:  description += ',' + str(product.barrenos) + 'barrenos'
           if not product.includes_glass: description += ', (maq)'
           # calculate unitary price of product
-
-          unit_price = self.total / self.quantity
+          # Creo que el problema es que estoy llamando self.total y self.quantity en vez de product.total y product.quantity    
+          unit_price = self.note_total / self.quantity
 
           resume.append((product.quantity,description,unit_price,self.total))
 
