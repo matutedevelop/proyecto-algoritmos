@@ -1,6 +1,6 @@
 import pandas as pd
 import time
-import csv
+
 
 # common tools
 
@@ -20,7 +20,18 @@ def get_date():
 
 class Pedido:
 
-    def __init__(self, id_note: int, quantity: int, glass_type: str, length: float, width: float, includes_glass: bool, barrenos: int, barrenos_type: str , sandblasted: bool, canteado: bool, extra: float) -> None:
+    def __init__(self,
+                 id_note: int,
+                 quantity: int,
+                 glass_type: str,
+                 length: float,
+                 width: float,
+                 includes_glass: bool,
+                 barrenos: int,
+                 barrenos_type: str,
+                 sandblasted: bool,
+                 canteado: bool,
+                 extra: float) -> None:
         self.id_note = id_note
         self.quantity = quantity
         self.glass_type = glass_type
@@ -98,9 +109,9 @@ class note :
           if not product.includes_glass: description += ', (maq)'
           # calculate unitary price of product
           # Creo que el problema es que estoy llamando self.total y self.quantity en vez de product.total y product.quantity    
-          unit_price = self.note_total / self.quantity
+          unit_price = product.total / product.quantity
 
-          resume.append((product.quantity,description,unit_price,self.total))
+          resume.append((product.quantity,description,unit_price,self.note_total))
 
       return (resume,self.note_total)
 

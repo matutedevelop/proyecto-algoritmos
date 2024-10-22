@@ -1,3 +1,8 @@
+"""Creo que este modulo no deberia de ser tan simple, quizas deberia de hacer un type checker y una funcion para escribir a cada tabla, 
+asi queda hardcodeadeada la direccion y se hace mas segura la comunicacion"""
+
+
+
 
 import pandas as pd
 
