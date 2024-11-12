@@ -39,6 +39,7 @@ path = "src/proyecto_algoritmos/__about__.py"
 [tool.hatch.envs.types]
 extra-dependencies = [
   "mypy>=1.0.0",
+  "pandas>="
 ]
 [tool.hatch.envs.types.scripts]
 check = "mypy --install-types --non-interactive {args:src/proyecto_algoritmos tests}"
@@ -61,5 +62,9 @@ exclude_lines = [
   "if __name__ == .__main__.:",
   "if TYPE_CHECKING:",
 ]
+
+
+
+
 
 

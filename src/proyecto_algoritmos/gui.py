@@ -1,46 +1,120 @@
+# gui.py
+
 import tkinter as tk
-from tkinter import ttk
+from tkinter import ttk, Canvas, Button, PhotoImage
+from pathlib import Path
+import screen_manager
 
-# app = tk.Tk()
+OUTPUT_PATH = Path(__file__).parent
+ASSETS_PATH = OUTPUT_PATH / Path(r"assets\frame0")
 
-# app.geometry("800x600")
+def relative_to_assets( path: str) -> Path:
+    return ASSETS_PATH / Path(path)
 
-# # Screen inicio
-
-
-
-
-
-
-
-# # ventana_1.mainloop
-
-# # btn1 = tk.Button(text="cotizar / crear pedido",command=ventana_1)
-# # btn2 = tk.Button(text="Datos y Finanzas",command=ventana_1)
-# # btn3 = tk.Button(text="clientes y precios",command=ventana_1)
-
-# selected = tk.BooleanVar()
-# check_button = tk.Checkbutton(app,text="test",variable=selected,command=lambda:print(selected.get()))
-
-# check_button.pack()
-# # btn1.pack()
-# # btn2.pack()
-# btn3.pack()
-
-
-# main screens
 
 class menu(ttk.Frame):
-    def __init__(self,parent,controller):
+    def __init__(self, parent, controller):
         super().__init__(parent)
+        self.controller = controller
+        
+        # Configure frame grid
+        self.grid_rowconfigure(0, weight=1)
+        self.grid_columnconfigure(0, weight=1)
+        
+        
+        self.init_screen()
 
-
-
+        
     def init_screen(self):
-        tk.Label(text='hello').pack(self)
+                # Canvas setup
+        self.canvas = Canvas(
+            self,
+            bg="#FFFFFF",
+            height=627,
+            width=1003,
+            bd=0,
+            highlightthickness=0,
+            relief="ridge"
+        )
+        self.canvas.grid(row=0, column=0, sticky="nsew")
+
+        # Background image
+        self.mebu_background_image = PhotoImage(file=relative_to_assets("image_1.png"))
+        self.canvas.create_image(
+            502.80448150634766,
+            313.98328971862793,
+            image=self.mebu_background_image
+        )
+
+        # Button 1
+        self.menu_clientes_button_image = PhotoImage(file=relative_to_assets("button_1.png"))
+        self.menu_button_clientes = Button(
+            self.canvas,
+            image=self.menu_clientes_button_image,
+            borderwidth=0,
+            highlightthickness=0,
+            command=lambda: self.controller.show_frame("finance"),
+            relief="flat",
+            bg="#FFFFFF"
+        )
+        self.menu_button_clientes.place(
+            x=154.9451904296875,
+            y=403.9252014160156,
+            width=218.34243774414062,
+            height=89.51094055175781
+        )
+
+        # Button 2 
+        self.menu_button_datos_image = PhotoImage(file=relative_to_assets("button_2.png"))
+        self.menu_button_datos = Button(
+            self.canvas,
+            image=self.menu_button_datos_image,
+            borderwidth=0,
+            highlightthickness=0,
+            command=lambda: self.controller.show_frame("clients"),
+            relief="flat",
+            bg="#FFFFFF"
+        )
+        self.menu_button_datos.place(
+            x=154.0949249267578,
+            y=276.8608703613281,
+            width=218.34243774414062,
+            height=89.51094055175781
+        )
+
+        # Button 3
+
+        self.menu_button_cotizar_image = PhotoImage(
+        file=relative_to_assets("button_3.png"))
+        self.menu_button_cotizar = Button(
+            self.canvas,
+            image=self.menu_button_cotizar_image,
+            borderwidth=0,
+            highlightthickness=0,
+            command=lambda: self.controller.show_screen('cotization_view'),
+            relief="flat",
+            bg="#FFFFFF"
+        )
+        self.menu_button_cotizar.place(
+            x=160.0949249267578,
+            y=150.22360229492188,
+            width=218.34243774414062,
+            height=89.51094055175781
+        )
+
+        # Decorative rectangles
+        self.canvas.create_rectangle(
+            15.0,
+            70.0000000049245,
+            606.0000000757296,
+            72.0,
+            fill="#D8D8D9",
+            outline=""
+        )
 
 
-class finance(ttk.Frame):
+
+class finance(ttk.Frame): 
     def __init__(self,parent,controller):
         super().__init__(parent)
 
@@ -71,7 +145,8 @@ class cotization_view(ttk.Frame):
         super().__init__(parent)
     
     def init_screen(self):
-        pass
+        bt1 = ttk.Button(self,text='abjhdbjhsa')
+        bt1.pack()
 
 class expense_input(ttk.Frame):
     def __init__(self,parent,controller):
@@ -111,8 +186,5 @@ class query_for_note(ttk.Frame):
     
     def init_screen(self):
         pass
-
-
-
 
 
