@@ -3,7 +3,8 @@
 import tkinter as tk
 from tkinter import ttk, Canvas, Button, PhotoImage
 from pathlib import Path
-import screen_manager
+import business_logic as bl
+
 
 OUTPUT_PATH = Path(__file__).parent
 ASSETS_PATH = OUTPUT_PATH / Path(r"assets\frame0")
@@ -39,7 +40,7 @@ class menu(ttk.Frame):
         self.canvas.grid(row=0, column=0, sticky="nsew")
 
         # Background image
-        self.mebu_background_image = PhotoImage(file=relative_to_assets("image_1.png"))
+        self.mebu_background_image = PhotoImage(file=relative_to_assets("menu_fondo.png"))
         self.canvas.create_image(
             502.80448150634766,
             313.98328971862793,
@@ -47,13 +48,13 @@ class menu(ttk.Frame):
         )
 
         # Button 1
-        self.menu_clientes_button_image = PhotoImage(file=relative_to_assets("button_1.png"))
+        self.menu_clientes_button_image = PhotoImage(file=relative_to_assets("menu_button_1.png"))
         self.menu_button_clientes = Button(
             self.canvas,
             image=self.menu_clientes_button_image,
             borderwidth=0,
             highlightthickness=0,
-            command=lambda: self.controller.show_frame("finance"),
+            command=lambda: self.controller.show_screen("finance"),
             relief="flat",
             bg="#FFFFFF"
         )
@@ -65,13 +66,13 @@ class menu(ttk.Frame):
         )
 
         # Button 2 
-        self.menu_button_datos_image = PhotoImage(file=relative_to_assets("button_2.png"))
+        self.menu_button_datos_image = PhotoImage(file=relative_to_assets("menu_button_2.png"))
         self.menu_button_datos = Button(
             self.canvas,
             image=self.menu_button_datos_image,
             borderwidth=0,
             highlightthickness=0,
-            command=lambda: self.controller.show_frame("clients"),
+            command=lambda: bl.open_powerbi_inform(),
             relief="flat",
             bg="#FFFFFF"
         )
@@ -85,7 +86,7 @@ class menu(ttk.Frame):
         # Button 3
 
         self.menu_button_cotizar_image = PhotoImage(
-        file=relative_to_assets("button_3.png"))
+        file=relative_to_assets("menu_button_3.png"))
         self.menu_button_cotizar = Button(
             self.canvas,
             image=self.menu_button_cotizar_image,
@@ -143,6 +144,13 @@ class summary_panel(ttk.Frame):
 class cotization_view(ttk.Frame):
     def __init__(self,parent,controller):
         super().__init__(parent)
+        self.controller = controller
+        # Configure frame grid
+        self.grid_rowconfigure(0, weight=1)
+        self.grid_columnconfigure(0, weight=1)
+        
+        
+        self.init_screen()
     
     def init_screen(self):
         bt1 = ttk.Button(self,text='abjhdbjhsa')

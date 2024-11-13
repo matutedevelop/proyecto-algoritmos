@@ -1,5 +1,6 @@
 import pandas as pd
 import time
+import webbrowser as wb
 
 
 # common tools
@@ -14,7 +15,9 @@ glass_prices = price_table["vidrio"]
 
 def get_date():
     return time.ctime(time.time())[:10]
-# def calculate_price(price_table,):
+
+def open_powerbi_inform():
+    wb.open('https://app.powerbi.com/view?r=eyJrIjoiNWEwMjkxY2MtM2Q2Ny00MGI5LTk0YWUtN2VkZTA5MTVmYTg2IiwidCI6IjZmMDM0OGYyLWU0OTgtNDVjOS04NGY0LWM2ZDgxZGNmZmRmZSIsImMiOjR9')
 
 # classes
 
