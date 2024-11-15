@@ -92,7 +92,7 @@ class menu(ttk.Frame):
             image=self.menu_button_cotizar_image,
             borderwidth=0,
             highlightthickness=0,
-            command=lambda: self.controller.show_screen('cotization_view'),
+            command=lambda: self.controller.show_screen('finance'),
             relief="flat",
             bg="#FFFFFF"
         )
@@ -118,10 +118,120 @@ class menu(ttk.Frame):
 class finance(ttk.Frame): 
     def __init__(self,parent,controller):
         super().__init__(parent)
+        self.controller = controller
+        
+        # Configure frame grid
+        self.grid_rowconfigure(0, weight=1)
+        self.grid_columnconfigure(0, weight=1)
+        
+        
+        self.init_screen()
 
     
     def init_screen(self):
-        pass
+        self.canvas = Canvas(
+        self,
+        bg = "#FFFFFF",
+        height = 627,
+        width = 1003,
+        bd = 0,
+        highlightthickness = 0,
+        relief = "ridge"
+            )
+
+        self.canvas.place(x = 0, y = 0)
+        self.finance_background_image = PhotoImage(
+            file=relative_to_assets("finance_fondo.png"))
+        image_1 = self.canvas.create_image(
+            515.0001220703125,
+            314.0,
+            image=self.finance_background_image
+        )
+
+        self.canvas.create_text(
+            63.0,
+            71.0,
+            anchor="nw",
+            text="Datos y finanzas",
+            fill="#000000",
+            font=("JetBrainsMono Regular", 48 * -1)
+        )
+
+        self.finance_button_image_1 = PhotoImage(
+            file=relative_to_assets("finance_button_1.png"))
+        self.button_1 = Button(
+            self,
+            image=self.finance_button_image_1,
+            borderwidth=0,
+            highlightthickness=0,
+            command=lambda: print("button_1 clicked"),
+            relief="flat"
+        )
+        self.button_1.place(
+            x=144.0,
+            y=313.0,
+            width=271.395263671875,
+            height=80.97615051269531
+        )
+
+        self.finance_button_image_2 = PhotoImage(
+            file=relative_to_assets("finance_button_2.png"))
+        self.button_2 = Button(
+            self,
+            image=self.finance_button_image_2,
+            borderwidth=0,
+            highlightthickness=0,
+            command=lambda: print("button_2 clicked"),
+            relief="flat"
+        )
+        self.button_2.place(
+            x=144.0,
+            y=213.0,
+            width=271.395263671875,
+            height=80.97615051269531
+        )
+
+        self.finance_button_image_3 = PhotoImage(
+            file=relative_to_assets("finance_button_3.png"))
+        self.button_3 = Button(
+            self,
+            image=self.finance_button_image_3,
+            borderwidth=0,
+            highlightthickness=0,
+            command=lambda: print("button_3 clicked"),
+            relief="flat"
+        )
+        self.button_3.place(
+            x=143.0,
+            y=413.4884033203125,
+            width=271.395263671875,
+            height=80.97615051269531
+        )
+
+        self.canvas.create_rectangle(
+            65.9984130859375,
+            130.69003295898438,
+            520.0010070800781,
+            131.69003295898438,
+            fill="#000000",
+            outline="")
+
+        button_image_4 = PhotoImage(
+            file=relative_to_assets("button_back.png"))
+        button_4 = Button(
+            self,
+            image=button_image_4,
+            borderwidth=0,
+            highlightthickness=0,
+            command=lambda: print("button_4 clicked"),
+            relief="flat"
+        )
+        button_4.place(
+            x=29.0,
+            y=27.0,
+            width=38.0,
+            height=32.0
+        )
 
 
 class clients(ttk.Frame):
