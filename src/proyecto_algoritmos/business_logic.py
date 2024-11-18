@@ -1,23 +1,62 @@
-import pandas as pd
+
 import time
 import webbrowser as wb
+import json
 
 
 # common tools
 
-directions = pd.read_json(r'C:\Users\fofoy\OneDrive\clarovent\Base_de_datos\direcciones.json',typ='series').to_dict()
-price_table = pd.read_json(directions["ruta_precios"]).to_dict()
+with open(r'C:\Users\fofoy\OneDrive\clarovent\Base_de_datos\direcciones.json', 'r') as f:
+    directions = json.load(f)
+
+
+with open(directions["ruta_precios"], 'r') as f:
+    price_table = json.load(f)
+
+
 
 process_prices = price_table["proceso"]
+process_names = list(process_prices.keys())
+
 glass_prices = price_table["vidrio"]
+glass_type_names = list(glass_prices.keys())
+
+drill_types = ["barreno 19","barreno 37"]
+
+
+
+
+
+
+def get_glass_price(glass_type):
+
+    try:
+        price = glass_prices[glass_type]
+    except:
+        raise ValueError("tipo de vidrio desconocido")
+
+
+def get_process_price(glass_type,process):
+    if process == "arenado": return process_prices[process]
+    elif process == "barreno 19": return process_prices[process]
+    elif process == "barreno 37": return process_prices[process]
+    elif process == "canto":
+        density = glass_type[-1]
+        return process_prices[process][density] 
+    else:
+        raise ValueError("proceso no valido")
+
 
 
 
 def get_date():
-    return time.ctime(time.time())[:10]
+    date = time.ctime(time.time())[:]
+    return date[4:7] + date[-5:]
+
 
 def open_powerbi_inform():
-    wb.open('https://app.powerbi.com/view?r=eyJrIjoiNWEwMjkxY2MtM2Q2Ny00MGI5LTk0YWUtN2VkZTA5MTVmYTg2IiwidCI6IjZmMDM0OGYyLWU0OTgtNDVjOS04NGY0LWM2ZDgxZGNmZmRmZSIsImMiOjR9')
+    link = "https://app.powerbi.com/view?r=eyJrIjoiNWEwMjkxY2MtM2Q2Ny00MGI5LTk0YWUtN2VkZTA5MTVmYTg2IiwidCI6IjZmMDM0OGYyLWU0OTgtNDVjOS04NGY0LWM2ZDgxZGNmZmRmZSIsImMiOjR9"
+    wb.open(link)
 
 # classes
 
@@ -53,10 +92,10 @@ class Pedido:
     def calculate_price(self):
 
         total = 0
-        if self.includes_glass == True: total += self.m2 * glass_prices[self.glass_type]
-        if self.sandblasted == True: total += self.m2 * process_prices["arenado"]
-        if self.canteado == True: total += self.ml * process_prices["canto"][self.glass_type[-1]]
-        total += self.barrenos * process_prices[self.barrenos_type]
+        if self.includes_glass == True: total += self.m2 * get_glass_price(self.glass_type)
+        if self.sandblasted == True: total += self.m2 * get_process_price(self.glass_type,"arenado")
+        if self.canteado == True: total += self.ml * get_process_price(self.glass_type,"canteado")
+        total += self.barrenos * get_process_price(self.glass_type,self.barrenos_type)
         total += self.extra
         total *= self.quantity
 
@@ -120,5 +159,7 @@ class note :
 
    def pack(Self) -> list :
         return [Self.date,Self.id,Self.client,Self.note_total,Self.type]
+
+
 
 

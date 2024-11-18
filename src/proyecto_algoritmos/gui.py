@@ -1,8 +1,9 @@
 # gui.py
 
 import tkinter as tk
-from tkinter import ttk, Canvas, Button, PhotoImage
+from tkinter import ttk, Canvas, Button, PhotoImage,Entry
 from pathlib import Path
+from tkinter.ttk import  Treeview, Combobox,Checkbutton
 import business_logic as bl
 
 
@@ -277,7 +278,7 @@ class clients(ttk.Frame):
             anchor="nw",
             text="Administrar Clientes",
             fill="#000000",
-            font=("JetBrainsMono Regular", 48 * -1)
+            font=("JetBrains Mono", 48 * -1)
         )
 
         self.clients_button_image_1 = PhotoImage(
@@ -348,8 +349,425 @@ class cotization_view(ttk.Frame):
         self.init_screen()
     
     def init_screen(self):
-        bt1 = ttk.Button(self,text='abjhdbjhsa')
-        bt1.pack()
+
+        ''' Logic for treeview  and variables'''
+
+        # Declaration
+        
+        self.qty = tk.IntVar()
+        self.glass_type = tk.StringVar()
+        self.width = tk.DoubleVar()
+        self.length = tk.DoubleVar()
+        self.includes_glass = tk.BooleanVar()
+        self.num_drills = tk.IntVar()
+        self.drills_type = tk.StringVar()
+        self.is_sandblasted = tk.BooleanVar()
+        self.aditional_fee = tk.DoubleVar()
+
+        # Set variables
+
+        self.qty.set(0)
+        self.glass_type.set("lun 3")
+        self.width.set(1)
+        self.length.set(1)
+        self.includes_glass.set(True)
+        self.num_drills.set(0)
+        self.drills_type.set("barreno 19")
+        self.is_sandblasted.set(False)
+        self.aditional_fee.set(0)
+
+
+
+
+
+
+
+
+
+
+
+
+
+        self.canvas = Canvas(
+            self,
+            bg = "#FFFFFF",
+            height = 627,
+            width = 1012,
+            bd = 0,
+            highlightthickness = 0,
+            relief = "ridge"
+            )
+
+        self.canvas.place(x = 0, y = 0)
+        image_image_1 = PhotoImage(
+        file=relative_to_assets("fondo_clean.png"))
+        image_1 = self.canvas.create_image(
+            506.0,
+            313.0,
+            image=image_image_1
+            )
+
+
+        self.canvas.create_text(
+            402.0015869140625,
+            46.0,
+            anchor="nw",
+            text="Cotizar",
+            fill="#000000",
+            font=("JetBrainsMono Regular", 48 * -1)
+            )   
+
+        self.canvas.create_rectangle(
+            278.0,
+            108.69003295898438,
+            732.0025939941406,
+            109.69003295898438,
+            fill="#000000",
+            outline="")
+
+        self.entry_image_1 = PhotoImage(
+        file=relative_to_assets("cot_entry.png"))
+        entry_bg_1 = self.canvas.create_image(
+            270.0,
+            453.5,
+            image=self.entry_image_1
+            )
+        self.combobox_glass_type = Combobox(
+            self,
+            values = bl.glass_type_names,
+
+        )
+        self.combobox_glass_type.place(
+            x=237.0,
+            y=436.0,
+            width=66.0,
+            height=33.0
+        )
+
+        self.canvas.create_text(
+            163.0,
+        419.0,
+        anchor="nw",
+        text="Cantidad",
+        fill="#000000",
+        font=("JetBrains Mono", 12 * -1)
+        )
+
+        self.canvas.create_text(
+            255.0,
+            419.0,
+            anchor="nw",
+            text="Tipo",
+            fill="#000000",
+            font=("JetBrainsMono Regular", 12 * -1)
+        )
+
+        self.canvas.create_text(
+            331.0,
+            419.0,
+            anchor="nw",
+            text="Ancho",
+            fill="#000000",
+            font=("JetBrainsMono Regular", 12 * -1)
+        )
+
+        self.canvas.create_text(
+            409.0,
+            419.0,
+            anchor="nw",
+            text="Largo",
+            fill="#000000",
+            font=("JetBrainsMono Regular", 12 * -1)
+        )
+
+        self.canvas.create_text(
+            484.0,
+            419.0,
+            anchor="nw",
+            text="Vidrio",
+            fill="#000000",
+            font=("JetBrainsMono Regular", 12 * -1)
+        )
+
+        self.canvas.create_text(
+            636.0,
+            419.0,
+            anchor="nw",
+            text="Tipo Ø",
+            fill="#000000",
+            font=("JetBrainsMono Regular", 12 * -1)
+        )
+
+        self.canvas.create_text(
+            715.0,
+            419.0,
+            anchor="nw",
+            text="Arenado",
+            fill="#000000",
+            font=("JetBrainsMono Regular", 12 * -1)
+        )
+
+        self.canvas.create_text(
+            786.0,
+            419.0,
+            anchor="nw",
+            text="Adicional",
+            fill="#000000",
+            font=("JetBrainsMono Regular", 12 * -1)
+        )
+
+        self.canvas.create_text(
+            562.0,
+            419.0,
+            anchor="nw",
+            text="Num. Ø",
+            fill="#000000",
+            font=("JetBrainsMono Regular", 12 * -1)
+        )
+
+        # Treeview declaration
+        columns = ["CANTIDAD","TIPO","ANCHO","LARGO","VIDRRIO","NUM. Ø","TIPO Ø","ARENADO","ADICIONAL"]
+
+        table = Treeview(
+            self,
+            columns=columns,
+            selectmode= "browse",
+            show="headings"
+
+        )
+        
+        for c in columns:
+            table.heading(c, text=c)
+            table.heading(c, text=c)
+            table.column(c, width=0)  # Ancho inicial 0
+            table.column(c, stretch=True)
+
+
+        table.place(
+            x=100,
+            y=150,
+            width=800,
+            height=250
+
+
+        )
+
+
+
+
+
+
+        self.entry_image_2 = PhotoImage(
+            file=relative_to_assets("cot_entry.png"))
+        entry_bg_2 = self.canvas.create_image(
+            192.0,
+            453.5,
+            image=self.entry_image_2
+        )
+        self.quantity_entry = tk.Entry(
+            self,
+            textvariable = self.qty,
+            bd=0,
+            bg="#FFFFFF",
+            fg="#000716",
+            highlightthickness=0
+        )
+        self.quantity_entry.place(
+            x=159.0,
+            y=436.0,
+            width=66.0,
+            height=33.0
+        )
+
+        self.entry_image_3 = PhotoImage(
+            file=relative_to_assets("cot_entry.png"))
+        entry_bg_3 = self.canvas.create_image(
+            348.5,
+            453.5,
+            image=self.entry_image_3
+        )
+        self.width_entry = tk.Entry(
+            self,
+            bd=0,
+            bg="#FFFFFF",
+            fg="#000716",
+            highlightthickness=0,
+            textvariable=self.width
+        )
+        self.width_entry.place(
+            x=315.0,
+            y=436.0,
+            width=67.0,
+            height=33.0
+        )
+
+        self.entry_image_4 = PhotoImage(
+            file=relative_to_assets("cot_entry.png"))
+        entry_bg_4 = self.canvas.create_image(
+            427.5,
+            453.5,
+            image=self.entry_image_4
+        )
+        self.length_entry = tk.Entry(
+            self,
+            bd=0,
+            bg="#FFFFFF",
+            fg="#000716",
+            highlightthickness=0,
+            textvariable=self.length
+        )
+        self.length_entry.place(
+            x=394.0,
+            y=436.0,
+            width=67.0,
+            height=33.0
+        )
+
+        self.entry_image_5 = PhotoImage(
+            file=relative_to_assets("cot_entry.png"))
+        entry_bg_5 = self.canvas.create_image(
+            506.0,
+            453.5,
+            image=self.entry_image_5
+        )
+        self.includes_glass_checkbtn = Checkbutton(
+            self,
+            variable=self.includes_glass
+        )
+        self.includes_glass_checkbtn.place(
+            x=495.0,
+            y=442.0,
+            width=20.0,
+            height=25.0
+        )
+
+        self.entry_image_6 = PhotoImage(
+            file=relative_to_assets("cot_entry.png"))
+        entry_bg_6 = self.canvas.create_image(
+            584.0,
+            453.5,
+            image=self.entry_image_6
+        )
+        self.drill_num_entry = tk.Entry(
+            self,
+            bd=0,
+            bg="#FFFFFF",
+            fg="#000716",
+            highlightthickness=0,
+            textvariable=self.num_drills
+        )
+        self.drill_num_entry.place(
+            x=551.0,
+            y=436.0,
+            width=66.0,
+            height=33.0
+        )
+
+        self.entry_image_7 = PhotoImage(
+            file=relative_to_assets("cot_entry.png"))
+        entry_bg_7 = self.canvas.create_image(
+            662.0,
+            453.5,
+            image=self.entry_image_7
+        )
+        self.drill_type_combobox = Combobox(
+            self,
+            values = bl.drill_types
+        )
+        self.drill_type_combobox.place(
+            x=629.0,
+            y=436.0,
+            width=63,
+            height=33
+        )
+
+        self.entry_image_8 = PhotoImage(
+            file=relative_to_assets("cot_entry.png"))
+        entry_bg_8 = self.canvas.create_image(
+            741.0,
+            453.5,
+            image=self.entry_image_8
+        )
+        self.sandblasted_checkbox = Checkbutton(self,variable=self.is_sandblasted)
+        self.sandblasted_checkbox.place(
+            x=730.0,
+            y=442.0,
+            width=20.0,
+            height=25.0
+        )
+
+        self.entry_image_9 = PhotoImage(
+            file=relative_to_assets("cot_entry.png"))
+        entry_bg_9 = self.canvas.create_image(
+            820.0,
+            453.5,
+            image=self.entry_image_9
+        )
+        self.aditional_fee_entry = tk.Entry(
+            
+            self,
+            bd=0,
+            bg="#FFFFFF",
+            fg="#000716",
+            highlightthickness=0,
+            textvariable=self.aditional_fee
+        )
+        self.aditional_fee_entry.place(
+            x=787.0,
+            y=436.0,
+            width=66.0,
+            height=33.0
+        )
+
+        self.button_image_1 = PhotoImage(
+            file=relative_to_assets("cot_button_1.png"))
+        button_1 = Button(
+            self,
+            image=self.button_image_1,
+            borderwidth=0,
+            highlightthickness=0,
+            command=lambda: print(self.qty.get()),
+            relief="flat"
+        )
+        button_1.place(
+            x=391.99998474121094,
+            y=506.0,
+            width=110.52107238769531,
+            height=32.97615051269531
+        )
+
+        self.button_image_2 = PhotoImage(file=relative_to_assets("cot_button_2.png"))
+        self.button_2 = Button(
+            self,
+            image=self.button_image_2,
+            borderwidth=0,
+            highlightthickness=0,
+            command=lambda: print("button_2 clicked"),
+            relief="flat"
+        )
+        self.button_2.place(
+            x=509.99998474121094,
+            y=506.0,
+            width=110.52107238769531,
+            height=32.97615051269531
+        )
+
+        self.button_image_3 = PhotoImage(
+            file=relative_to_assets("button_back.png"))
+        self.button_3 = Button(
+            self,
+            image=self.button_image_3,
+            borderwidth=0,
+            highlightthickness=0,
+            command=lambda: print("button_3 clicked"),
+            relief="flat"
+        )
+        self.button_3.place(
+            x=38.0,
+            y=28.0,
+            width=38.0,
+            height=32.0
+        )
 
 class expense_input(ttk.Frame):
     def __init__(self,parent,controller):
