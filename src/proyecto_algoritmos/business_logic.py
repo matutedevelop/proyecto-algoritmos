@@ -4,7 +4,7 @@ import webbrowser as wb
 import json
 
 
-# common tools
+
 
 with open(r'C:\Users\fofoy\OneDrive\clarovent\Base_de_datos\direcciones.json', 'r') as f:
     directions = json.load(f)
@@ -14,6 +14,7 @@ with open(directions["ruta_precios"], 'r') as f:
     price_table = json.load(f)
 
 
+# Common variables
 
 process_prices = price_table["proceso"]
 process_names = list(process_prices.keys())
@@ -23,10 +24,16 @@ glass_type_names = list(glass_prices.keys())
 
 drill_types = ["barreno 19","barreno 37"]
 
+pay_forms = ["efe","efe/maq","transf"]
 
 
+# really important variables <><> <><> <><> <><> <><> <><> <><> <><> <><> <><> <><> <><> <><> <><>
+
+orders_list = []
+current_note = None
 
 
+# common tools
 
 def get_glass_price(glass_type):
 
@@ -44,7 +51,7 @@ def get_process_price(glass_type,process):
         density = glass_type[-1]
         return process_prices[process][density] 
     else:
-        raise ValueError("proceso no valido")
+        raise ValueError("proceso no encontrado")
 
 
 
@@ -55,7 +62,7 @@ def get_date():
 
 
 def open_powerbi_inform():
-    link = "https://app.powerbi.com/view?r=eyJrIjoiNWEwMjkxY2MtM2Q2Ny00MGI5LTk0YWUtN2VkZTA5MTVmYTg2IiwidCI6IjZmMDM0OGYyLWU0OTgtNDVjOS04NGY0LWM2ZDgxZGNmZmRmZSIsImMiOjR9"
+    link = "https://app.powerbi.com/view?r=eyJrIjoiYTY0ZDc3MTktMWFlZC00NjY1LTkzZGMtODllZjk0NjE4NDkzIiwidCI6IjZmMDM0OGYyLWU0OTgtNDVjOS04NGY0LWM2ZDgxZGNmZmRmZSIsImMiOjR9"
     wb.open(link)
 
 # classes
@@ -63,7 +70,7 @@ def open_powerbi_inform():
 class Pedido:
 
     def __init__(self,
-                 id_note: int,
+                 # id_note: int,
                  quantity: int,
                  glass_type: str,
                  length: float,
@@ -74,7 +81,7 @@ class Pedido:
                  sandblasted: bool,
                  canteado: bool,
                  extra: float) -> None:
-        self.id_note = id_note
+        self.id_note ='XXXXXX'
         self.quantity = quantity
         self.glass_type = glass_type
         self.dimensions = str(length) + 'x' + str(width)
@@ -87,7 +94,7 @@ class Pedido:
         self.canteado = canteado
         self.extra = extra
 
-# Tipo de vidrio es un string que se nos da por una combo box, y debe ser igual a los del json
+
 
     def calculate_price(self):
 
@@ -114,7 +121,7 @@ class Pedido:
 
 
 class note :
-   def __init__(self, id:int, client:str, products = [], typ="efectivo"  ) -> None:
+   def __init__(self,products = []):
        
        if len(products) == 0:
            raise ValueError("No se puede crear una lista sin pedidos")
@@ -124,9 +131,9 @@ class note :
 
        else: 
         self.date = get_date()
-        self.id = id
-        self.client = client
-        self.type = typ
+        self.id = 'XXXXXX'
+        self.client = 'client'
+        self.type = 'efe'
         self.products = products
     # calcular el total de la lista
         note_total = 0

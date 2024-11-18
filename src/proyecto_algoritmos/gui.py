@@ -18,15 +18,15 @@ class menu(ttk.Frame):
     def __init__(self, parent, controller):
         super().__init__(parent)
         self.controller = controller
-        
+
         # Configure frame grid
         self.grid_rowconfigure(0, weight=1)
         self.grid_columnconfigure(0, weight=1)
-        
-        
+
+
         self.init_screen()
 
-        
+
     def init_screen(self):
                 # Canvas setup
         self.canvas = Canvas(
@@ -66,7 +66,7 @@ class menu(ttk.Frame):
             height=89.51094055175781
         )
 
-        # Button 2 
+        # Button 2
         self.menu_button_datos_image = PhotoImage(file=relative_to_assets("menu_button_2.png"))
         self.menu_button_datos = Button(
             self.canvas,
@@ -116,19 +116,19 @@ class menu(ttk.Frame):
 
 
 
-class finance(ttk.Frame): 
+class finance(ttk.Frame):
     def __init__(self,parent,controller):
         super().__init__(parent)
         self.controller = controller
-        
+
         # Configure frame grid
         self.grid_rowconfigure(0, weight=1)
         self.grid_columnconfigure(0, weight=1)
-        
-        
+
+
         self.init_screen()
 
-    
+
     def init_screen(self):
         self.canvas = Canvas(
         self,
@@ -166,7 +166,7 @@ class finance(ttk.Frame):
             borderwidth=0,
             bg="#ffffff",
             highlightthickness=0,
-            command=lambda: print("button_1 clicked"),
+            command=lambda: bl.open_powerbi_inform(),
             relief="flat"
         )
         self.button_1.place(
@@ -243,15 +243,15 @@ class clients(ttk.Frame):
     def __init__(self,parent,controller):
         super().__init__(parent)
         self.controller = controller
-        
+
         # Configure frame grid
         self.grid_rowconfigure(0, weight=1)
         self.grid_columnconfigure(0, weight=1)
-        
-        
+
+
         self.init_screen()
 
-    
+
     def init_screen(self):
         self.canvas = Canvas(
             self,
@@ -327,12 +327,12 @@ class clients(ttk.Frame):
 
 
 
-# pa   ntallas secundarias / datos y finanzas 
+# pa   ntallas secundarias / datos y finanzas
 
 class summary_panel(ttk.Frame):
     def __init__(self,parent,controller):
         super().__init__(parent)
-    
+
     def init_screen(self):
         pass
 
@@ -344,16 +344,10 @@ class cotization_view(ttk.Frame):
         # Configure frame grid
         self.grid_rowconfigure(0, weight=1)
         self.grid_columnconfigure(0, weight=1)
-        
-        
-        self.init_screen()
-    
-    def init_screen(self):
 
         ''' Logic for treeview  and variables'''
 
         # Declaration
-        
         self.qty = tk.IntVar()
         self.glass_type = tk.StringVar()
         self.width = tk.DoubleVar()
@@ -363,6 +357,7 @@ class cotization_view(ttk.Frame):
         self.drills_type = tk.StringVar()
         self.is_sandblasted = tk.BooleanVar()
         self.aditional_fee = tk.DoubleVar()
+        self.is_canteado = tk.BooleanVar()
 
         # Set variables
 
@@ -375,16 +370,11 @@ class cotization_view(ttk.Frame):
         self.drills_type.set("barreno 19")
         self.is_sandblasted.set(False)
         self.aditional_fee.set(0)
+        self.is_canteado.set(False)
 
+        self.init_screen()
 
-
-
-
-
-
-
-
-
+    def init_screen(self):
 
 
 
@@ -415,7 +405,7 @@ class cotization_view(ttk.Frame):
             text="Cotizar",
             fill="#000000",
             font=("JetBrainsMono Regular", 48 * -1)
-            )   
+            )
 
         self.canvas.create_rectangle(
             278.0,
@@ -435,6 +425,7 @@ class cotization_view(ttk.Frame):
         self.combobox_glass_type = Combobox(
             self,
             values = bl.glass_type_names,
+            textvariable=self.glass_type
 
         )
         self.combobox_glass_type.place(
@@ -515,6 +506,14 @@ class cotization_view(ttk.Frame):
             fill="#000000",
             font=("JetBrainsMono Regular", 12 * -1)
         )
+        self.canvas.create_text(
+            875.0,
+            419.0,
+            anchor="nw",
+            text="Canteado",
+            fill="#000000",
+            font=("JetBrainsMono Regular", 12 * -1)
+        )
 
         self.canvas.create_text(
             562.0,
@@ -526,24 +525,23 @@ class cotization_view(ttk.Frame):
         )
 
         # Treeview declaration
-        columns = ["CANTIDAD","TIPO","ANCHO","LARGO","VIDRRIO","NUM. Ø","TIPO Ø","ARENADO","ADICIONAL"]
+        columns = ["CANTIDAD","TIPO","ANCHO","LARGO","VIDRRIO","NUM. Ø","TIPO Ø","ARENADO","CANTEADO","ADICIONAL"]
 
-        table = Treeview(
+        self.table = Treeview(
             self,
             columns=columns,
             selectmode= "browse",
             show="headings"
 
         )
-        
+
         for c in columns:
-            table.heading(c, text=c)
-            table.heading(c, text=c)
-            table.column(c, width=0)  # Ancho inicial 0
-            table.column(c, stretch=True)
+            self.table.heading(c, text=c)
+            self.table.column(c, width=0)
+            self.table.column(c, stretch=True)
 
 
-        table.place(
+        self.table.place(
             x=100,
             y=150,
             width=800,
@@ -553,7 +551,7 @@ class cotization_view(ttk.Frame):
         )
 
 
-
+        self.table.bind("<BackSpace>",self.delete_selection)
 
 
 
@@ -672,12 +670,13 @@ class cotization_view(ttk.Frame):
         )
         self.drill_type_combobox = Combobox(
             self,
-            values = bl.drill_types
+            values = bl.drill_types,
+            textvariable= self.drills_type
         )
         self.drill_type_combobox.place(
-            x=629.0,
+            x=622.0,
             y=436.0,
-            width=63,
+            width=79,
             height=33
         )
 
@@ -704,7 +703,7 @@ class cotization_view(ttk.Frame):
             image=self.entry_image_9
         )
         self.aditional_fee_entry = tk.Entry(
-            
+
             self,
             bd=0,
             bg="#FFFFFF",
@@ -713,23 +712,43 @@ class cotization_view(ttk.Frame):
             textvariable=self.aditional_fee
         )
         self.aditional_fee_entry.place(
-            x=787.0,
+            x=785.0,
             y=436.0,
             width=66.0,
             height=33.0
         )
 
+        self.entry_image_10 = PhotoImage(
+            file=relative_to_assets("cot_entry.png"))
+        entry_bg_5 = self.canvas.create_image(
+            900.0,
+            453.5,
+            image=self.entry_image_5
+        )
+        self.canteado_check_btn = Checkbutton(
+            self,
+            variable=self.is_canteado
+        )
+        self.canteado_check_btn.place(
+            x=889.0,
+            y=442.0,
+            width=20.0,
+            height=25.0
+        )
+
         self.button_image_1 = PhotoImage(
             file=relative_to_assets("cot_button_1.png"))
-        button_1 = Button(
+        cot_btn_cotizar = Button(
             self,
+            bg="#FFFFFF",
+            fg="#000000",
             image=self.button_image_1,
             borderwidth=0,
             highlightthickness=0,
-            command=lambda: print(self.qty.get()),
+            command=lambda: self.append_to_list_switch_screen(),
             relief="flat"
         )
-        button_1.place(
+        cot_btn_cotizar.place(
             x=391.99998474121094,
             y=506.0,
             width=110.52107238769531,
@@ -737,15 +756,17 @@ class cotization_view(ttk.Frame):
         )
 
         self.button_image_2 = PhotoImage(file=relative_to_assets("cot_button_2.png"))
-        self.button_2 = Button(
+        self.cot_button_add_to_table = Button(
             self,
+            bg="#FFFFFF",
+            fg="#000000",
             image=self.button_image_2,
             borderwidth=0,
             highlightthickness=0,
-            command=lambda: print("button_2 clicked"),
+            command=lambda: self.add_to_table(),
             relief="flat"
         )
-        self.button_2.place(
+        self.cot_button_add_to_table.place(
             x=509.99998474121094,
             y=506.0,
             width=110.52107238769531,
@@ -754,7 +775,7 @@ class cotization_view(ttk.Frame):
 
         self.button_image_3 = PhotoImage(
             file=relative_to_assets("button_back.png"))
-        self.button_3 = Button(
+        self.cot_button_back = Button(
             self,
             image=self.button_image_3,
             borderwidth=0,
@@ -762,17 +783,65 @@ class cotization_view(ttk.Frame):
             command=lambda: print("button_3 clicked"),
             relief="flat"
         )
-        self.button_3.place(
+        self.cot_button_back.place(
             x=38.0,
             y=28.0,
             width=38.0,
             height=32.0
         )
 
+
+    def add_to_table(self):
+        data = [self.qty.get(),self.glass_type.get(),
+                self.width.get(),self.length.get(),
+                self.includes_glass.get(),self.num_drills.get(),
+                self.drills_type.get(),self.is_sandblasted.get(),
+                self.is_canteado.get(),self.aditional_fee.get()]
+
+        self.table.insert(parent='',index=tk.END,values=data)
+
+    def delete_selection(self,_):
+        selection = self.table.selection()
+
+        self.table.delete(selection[0])
+
+
+    def convert_to_orders(self):
+        items = self.table.get_children()
+        values = [self.table.item(i)['values'] for i in items ]
+        
+        # esta parte castea los valores a lo que deberian de ser, 
+        # pues en las tablas de tkinter todo es texto
+        for v in values:
+            v[0] = int(v[0])
+            v[2] = float(v[2])
+            v[3] = float(v[3])
+            v[4] = bool(v[4])
+            v[5] = int(v[5])
+            v[7] = bool(v[7])
+            v[8] = bool(v[8])
+            v[9] = float(v[9])
+        try:
+
+            return [bl.Pedido(*v) for v in values]
+
+        except:
+             raise ValueError("error al convertir a pedido")
+
+
+
+    def append_to_list_switch_screen(self):
+        orders = self.convert_to_orders()
+        for o in orders:
+            bl.orders_list.append(o)
+        print(len(bl.orders_list))
+        self.controller.show_screen("summary_panel")
+
+
 class expense_input(ttk.Frame):
     def __init__(self,parent,controller):
         super().__init__(parent)
-    
+
     def init_screen(self):
         pass
 
@@ -780,31 +849,34 @@ class expense_input(ttk.Frame):
 class delete_note(ttk.Frame):
     def __init__(self,parent,controller):
         super().__init__(parent)
-    
+
     def init_screen(self):
         pass
 
-# pantallas secundarias administrar clientes y precios 
+# pantallas secundarias administrar clientes y precios
 
 
 class view_delete_client(ttk.Frame):
     def __init__(self,parent,controller):
         super().__init__(parent)
-    
+
     def init_screen(self):
         pass
 
 class create_order(ttk.Frame):
     def __init__(self,parent,controller):
         super().__init__(parent)
-    
+
     def init_screen(self):
         pass
 
-class query_for_note(ttk.Frame):
+class note_summary(ttk.Frame):
     def __init__(self,parent,controller):
         super().__init__(parent)
-    
+        self.id = tk.IntVar()
+        self.id.set(0)
+
+
     def init_screen(self):
         pass
 

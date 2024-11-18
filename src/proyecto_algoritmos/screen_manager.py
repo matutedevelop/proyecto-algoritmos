@@ -23,7 +23,7 @@ class manager(tk.Tk):
         screen_classes = [
             menu, finance, summary_panel, cotization_view,
             expense_input, delete_note,view_delete_client, 
-            create_order,query_for_note,clients
+            create_order,note_summary,clients
         ]
 
         
