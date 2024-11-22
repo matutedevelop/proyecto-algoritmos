@@ -877,7 +877,10 @@ class cotization_view(ttk.Frame):
 
         # Convertir  pedidos a nota
         bl.current_note = bl.note(bl.orders_list)
-        print(bl.current_note.get_resume())
+        bl.current_note.get_resume()
+
+        self.controller.frames["note_summary"].add_total_text()
+        self.controller.frames["note_summary"].add_to_table()
         self.controller.show_screen("note_summary")
 
 
@@ -977,6 +980,36 @@ class note_summary(ttk.Frame):
             fill="#000000",
             font=("JetBrainsMono Regular", 12 * -1)
         )
+        # crear treeview
+
+        columns = ["CANTIDAD", "Descripcion","P. UNITARIO", "IMPORTE"]
+        self.table = Treeview(
+                self,
+                columns=columns,
+                selectmode= "browse",
+                show="headings"
+
+                )
+
+        for c in columns:
+            self.table.heading(c, text=c)
+            self.table.column(c, width=0)
+            self.table.column(c, stretch=True)
+
+            self.table.place(
+
+            x=100,
+            y=170,
+            width=400,
+            height=300
+
+
+            )
+
+        
+
+
+
         
         self.entry_image_1 = PhotoImage(
             file=relative_to_assets("cot_entry.png"))
@@ -1015,16 +1048,13 @@ class note_summary(ttk.Frame):
             251.5,
             image=self.entry_image_2
         )
-        self.entry_2 = Entry(
+        self.entry_2 = Combobox(
             self,
-            bd=0,
-            bg="#FFFFFF",
-            fg="#000716",
-            highlightthickness=0
+            values= bl.clients
         )
         self.entry_2.place(
             x=753.0,
-            y=234.0,
+            y=236.0,
             width=85.0,
             height=33.0
         )
@@ -1037,7 +1067,8 @@ class note_summary(ttk.Frame):
             borderwidth=0,
             highlightthickness=0,
             command=lambda: print("button_1 clicked"),
-            relief="flat"
+            relief="flat",
+            bg="#FFFFFF"
         )
         self.button_1.place(
             x=696.9999847412109,
@@ -1054,7 +1085,8 @@ class note_summary(ttk.Frame):
             borderwidth=0,
             highlightthickness=0,
             command=lambda: print("button_2 clicked"),
-            relief="flat"
+            relief="flat",
+            bg="#FFFFFF"
         )
         self.button_2.place(
             x=38.0,
@@ -1078,14 +1110,28 @@ class note_summary(ttk.Frame):
             338.0,
             fill="#FF0909",
             outline="")
-        total = 100
+        
+        
+        
+
+    def add_total_text(self):
+        total = bl.current_note.note_total
         self.canvas.create_text(
             712.0,
             309.0,
             anchor="nw",
-            text=f"Total:$ {"aa"}",
+            text=f"Total:$ {total}",
             fill="#FF0909",
             font=("JetBrainsMono Regular", 24 * -1)
         )
+
+
+
+    def add_to_table(self):
+       orders = bl.orders_list
+       for o in orders:
+            
+            data = [o.quantity,o.description,o.unit_price,o.total]
+            self.table.insert(parent='',index = tk.END,values=data)
 
 
