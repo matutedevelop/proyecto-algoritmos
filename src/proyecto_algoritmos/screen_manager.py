@@ -42,3 +42,8 @@ class manager(tk.Tk):
             s = self.frames[screen]
             s.tkraise()
         else: raise ValueError('no se puede encontrar la pantalla especificada')
+
+    def reset_app(self):
+        bl.orders_list.clear()
+        bl.current_note = None
+        self.show_screen('menu')

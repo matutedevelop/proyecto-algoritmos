@@ -2,6 +2,7 @@
 import time
 import webbrowser as wb
 import json
+import pandas as pd
 
 
 
@@ -27,6 +28,13 @@ drill_types = ["barreno 19","barreno 37"]
 pay_forms = ["efe","efe/maq","transf"]
 
 
+clients = pd.read_csv(directions["ruta_clientes"])
+clients = list(clients["cliente"].values)
+
+
+
+
+
 # really important variables <><> <><> <><> <><> <><> <><> <><> <><> <><> <><> <><> <><> <><> <><>
 
 orders_list = []
@@ -39,6 +47,7 @@ def get_glass_price(glass_type):
 
     try:
         price = glass_prices[glass_type]
+        return price
     except:
         raise ValueError("tipo de vidrio desconocido")
 
@@ -51,7 +60,7 @@ def get_process_price(glass_type,process):
         density = glass_type[-1]
         return process_prices[process][density] 
     else:
-        raise ValueError("proceso no encontrado")
+        raise ValueError(f"proceso no encontrado {glass_type},{process}")
 
 
 
@@ -70,7 +79,7 @@ def open_powerbi_inform():
 class Pedido:
 
     def __init__(self,
-                 # id_note: int,
+                 
                  quantity: int,
                  glass_type: str,
                  length: float,
@@ -93,20 +102,26 @@ class Pedido:
         self.sandblasted = sandblasted
         self.canteado = canteado
         self.extra = extra
-
+        
+    def __str__(self):
+        return f"Pedido(id_note={self.id_note}, quantity={self.quantity}, glass_type={self.glass_type}, dimensions={self.dimensions},  "
+        
 
 
     def calculate_price(self):
-
+ 
         total = 0
-        if self.includes_glass == True: total += self.m2 * get_glass_price(self.glass_type)
-        if self.sandblasted == True: total += self.m2 * get_process_price(self.glass_type,"arenado")
-        if self.canteado == True: total += self.ml * get_process_price(self.glass_type,"canteado")
+        if self.includes_glass: total += self.m2 * get_glass_price(self.glass_type)
+        if self.sandblasted: total += self.m2 * get_process_price(self.glass_type,"arenado")
+        if self.canteado: total += self.ml * get_process_price(self.glass_type,"canto")
         total += self.barrenos * get_process_price(self.glass_type,self.barrenos_type)
         total += self.extra
         total *= self.quantity
 
         self.total = total
+
+
+
 
 
 
@@ -122,7 +137,6 @@ class Pedido:
 
 class note :
    def __init__(self,products = []):
-       
        if len(products) == 0:
            raise ValueError("No se puede crear una lista sin pedidos")
        
@@ -148,21 +162,29 @@ class note :
 
 
    def get_resume(self) -> tuple :
-      resume = []
       # build up the description of the pedido , aka product (see resumen cotizacion on the mock up)
       for product in self.products:
-          description = product.glass_type + product.dimensions
+          description = product.glass_type + ' ' + product.dimensions
           if product.sandblasted: description += ' ,arenado'
           if product.canteado: description += ' ,canteado'
-          if product.barrenos > 0:  description += ',' + str(product.barrenos) + 'barrenos'
+          if product.barrenos > 0:  description += ',' + str(product.barrenos) + ' barrenos'
           if not product.includes_glass: description += ', (maq)'
+
+          product.description = description
+          
           # calculate unitary price of product
           # Creo que el problema es que estoy llamando self.total y self.quantity en vez de product.total y product.quantity    
-          unit_price = product.total / product.quantity
+          if product.quantity != 0:
+            product.unit_price = product.total / product.quantity
+            
+          else:
+            raise ValueError("la cantidad no puede ser cero")
+          
 
-          resume.append((product.quantity,description,unit_price,self.note_total))
 
-      return (resume,self.note_total)
+      
+
+      
 
    def pack(Self) -> list :
         return [Self.date,Self.id,Self.client,Self.note_total,Self.type]

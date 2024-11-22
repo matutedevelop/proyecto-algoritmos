@@ -225,7 +225,7 @@ class finance(ttk.Frame):
         self.button_4 = Button(
             self,
             image=self.finance_button_image_4,
-            command=lambda: print("button_4 clicked"),
+            command=lambda: self.controller.reset_app(),
             bg="#ffffff",
             borderwidth=0,
             highlightthickness=0,
@@ -272,47 +272,66 @@ class clients(ttk.Frame):
             image=self.background_image
         )
 
+
         self.canvas.create_text(
             72.0,
             72.0,
             anchor="nw",
             text="Administrar Clientes",
             fill="#000000",
-            font=("JetBrains Mono", 48 * -1)
+            font=("JetBrainsMono Regular", 48 * -1)
         )
 
-        self.clients_button_image_1 = PhotoImage(
-            file=relative_to_assets("clientes_button_1.png"))
+        self.button_image_1 = PhotoImage(
+            file=relative_to_assets("cli_button_ver_clientes.png"))
         self.button_1 = Button(
             self,
-            bg= "#ffffff",
-            image=self.clients_button_image_1,
+            image=self.button_image_1,
             borderwidth=0,
             highlightthickness=0,
             command=lambda: print("button_1 clicked"),
-            relief="flat"
+            relief="flat",
+            bg="#FFFFFF"
         )
         self.button_1.place(
-            x=123.0,
-            y=368.0,
+            x=143.0,
+            y=328.0,
             width=271.395263671875,
             height=80.97615051269531
         )
 
-        self.clientes_button_image_2 = PhotoImage(
-            file=relative_to_assets("clientes_button_2.png"))
+        self.button_image_2 = PhotoImage(
+            file=relative_to_assets("cli_button_add_abono.png"))
         self.button_2 = Button(
             self,
-            bg= "#ffffff",
-            image=self.clientes_button_image_2,
+            image=self.button_image_2,
             borderwidth=0,
             highlightthickness=0,
             command=lambda: print("button_2 clicked"),
-            relief="flat"
+            relief="flat",
+            bg="#FFFFFF"
         )
         self.button_2.place(
-            x=123.0,
-            y=268.0,
+            x=143.0,
+            y=428.0,
+            width=271.395263671875,
+            height=80.97615051269531
+        )
+
+        self.button_image_3 = PhotoImage(
+            file=relative_to_assets("cli_button_create.png"))
+        self.button_3 = Button(
+            self,
+            image=self.button_image_3,
+            borderwidth=0,
+            highlightthickness=0,
+            command=lambda: print("button_3 clicked"),
+            relief="flat",
+            bg="#FFFFFF"
+        )
+        self.button_3.place(
+            x=143.0,
+            y=228.0,
             width=271.395263671875,
             height=80.97615051269531
         )
@@ -324,6 +343,25 @@ class clients(ttk.Frame):
             132.69003295898438,
             fill="#000000",
             outline="")
+
+            
+        self.button_image_4 = PhotoImage(
+            file=relative_to_assets("button_back.png"))
+        self.button_4 = Button(
+            self,
+            image=self.button_image_4,
+            borderwidth=0,
+            highlightthickness=0,
+            command=lambda: self.controller.reset_app(),
+            relief="flat",
+            bg="#FFFFFF"
+        )
+        self.button_4.place(
+            x=38.0,
+            y=38.0,
+            width=38.0,
+            height=32.0
+        )
 
 
 
@@ -418,7 +456,7 @@ class cotization_view(ttk.Frame):
         self.entry_image_1 = PhotoImage(
         file=relative_to_assets("cot_entry.png"))
         entry_bg_1 = self.canvas.create_image(
-            270.0,
+            240.0,
             453.5,
             image=self.entry_image_1
             )
@@ -429,14 +467,14 @@ class cotization_view(ttk.Frame):
 
         )
         self.combobox_glass_type.place(
-            x=237.0,
+            x=207.0,
             y=436.0,
             width=66.0,
             height=33.0
         )
 
         self.canvas.create_text(
-            163.0,
+        130.0,
         419.0,
         anchor="nw",
         text="Cantidad",
@@ -445,7 +483,7 @@ class cotization_view(ttk.Frame):
         )
 
         self.canvas.create_text(
-            255.0,
+            210.0,
             419.0,
             anchor="nw",
             text="Tipo",
@@ -558,7 +596,7 @@ class cotization_view(ttk.Frame):
         self.entry_image_2 = PhotoImage(
             file=relative_to_assets("cot_entry.png"))
         entry_bg_2 = self.canvas.create_image(
-            192.0,
+            157.0,
             453.5,
             image=self.entry_image_2
         )
@@ -571,7 +609,7 @@ class cotization_view(ttk.Frame):
             highlightthickness=0
         )
         self.quantity_entry.place(
-            x=159.0,
+            x=124.0,
             y=436.0,
             width=66.0,
             height=33.0
@@ -780,7 +818,7 @@ class cotization_view(ttk.Frame):
             image=self.button_image_3,
             borderwidth=0,
             highlightthickness=0,
-            command=lambda: print("button_3 clicked"),
+            command=lambda: self.controller.reset_app(),
             relief="flat"
         )
         self.cot_button_back.place(
@@ -821,8 +859,10 @@ class cotization_view(ttk.Frame):
             v[7] = bool(v[7])
             v[8] = bool(v[8])
             v[9] = float(v[9])
-        try:
 
+
+        try:
+            pass
             return [bl.Pedido(*v) for v in values]
 
         except:
@@ -834,8 +874,11 @@ class cotization_view(ttk.Frame):
         orders = self.convert_to_orders()
         for o in orders:
             bl.orders_list.append(o)
-        print(len(bl.orders_list))
-        self.controller.show_screen("summary_panel")
+
+        # Convertir  pedidos a nota
+        bl.current_note = bl.note(bl.orders_list)
+        print(bl.current_note.get_resume())
+        self.controller.show_screen("note_summary")
 
 
 class expense_input(ttk.Frame):
@@ -867,17 +910,182 @@ class create_order(ttk.Frame):
     def __init__(self,parent,controller):
         super().__init__(parent)
 
+
+
     def init_screen(self):
         pass
-
+        
+        
 class note_summary(ttk.Frame):
     def __init__(self,parent,controller):
         super().__init__(parent)
         self.id = tk.IntVar()
         self.id.set(0)
+        self.init_screen()
 
 
     def init_screen(self):
-        pass
+        self.canvas = Canvas(
+            self,
+            bg = "#FFFFFF",
+            height = 627,
+            width = 1012,
+            bd = 0,
+            highlightthickness = 0,
+            relief = "ridge"
+        )
+        
+        self.canvas.place(x = 0, y = 0)
+        self.image_image_1 = PhotoImage(
+            file=relative_to_assets("fondo_clean.png"))
+        image_1 = self.canvas.create_image(
+            506.0,
+            313.0,
+            image=self.image_image_1
+        )
+        
+        self.image_image_2 = PhotoImage(
+            file=relative_to_assets("logo.png"))
+        image_2 = self.canvas.create_image(
+            875.0,
+            84.0,
+            image=self.image_image_2
+        )
+        
+        self.canvas.create_text(
+            272.0,
+            46.0,
+            anchor="nw",
+            text="Confirmar pedido",
+            fill="#000000",
+            font=("JetBrainsMono Regular", 48 * -1)
+        )
+        
+        self.canvas.create_rectangle(
+            278.0,
+            108.69003295898438,
+            732.0025939941406,
+            109.69003295898438,
+            fill="#000000",
+            outline="")
+        
+        self.canvas.create_text(
+            751.0,
+            158.0,
+            anchor="nw",
+            text="ID",
+            fill="#000000",
+            font=("JetBrainsMono Regular", 12 * -1)
+        )
+        
+        self.entry_image_1 = PhotoImage(
+            file=relative_to_assets("cot_entry.png"))
+        entry_bg_1 = self.canvas.create_image(
+            786.5,
+            191.5,
+            image=self.entry_image_1
+        )
+        self.entry_1 = Entry(
+            self,
+            bd=0,
+            bg="#FFFFFF",
+            fg="#000716",
+            highlightthickness=0
+        )
+        self.entry_1.place(
+            x=753.0,
+            y=174.0,
+            width=67.0,
+            height=33.0
+        )
+        
+        self.canvas.create_text(
+            751.0,
+            218.0,
+            anchor="nw",
+            text="Cliente",
+            fill="#000000",
+            font=("JetBrainsMono Regular", 12 * -1)
+        )
+        
+        self.entry_image_2 = PhotoImage(
+            file=relative_to_assets("cot_entry.png"))
+        entry_bg_2 = self.canvas.create_image(
+            795.5,
+            251.5,
+            image=self.entry_image_2
+        )
+        self.entry_2 = Entry(
+            self,
+            bd=0,
+            bg="#FFFFFF",
+            fg="#000716",
+            highlightthickness=0
+        )
+        self.entry_2.place(
+            x=753.0,
+            y=234.0,
+            width=85.0,
+            height=33.0
+        )
+        
+        self.button_image_1 = PhotoImage(
+            file=relative_to_assets("conf_confirmar.png"))
+        self.button_1 = Button(
+            self,
+            image=self.button_image_1,
+            borderwidth=0,
+            highlightthickness=0,
+            command=lambda: print("button_1 clicked"),
+            relief="flat"
+        )
+        self.button_1.place(
+            x=696.9999847412109,
+            y=382.0,
+            width=198.65003967285156,
+            height=59.02384948730469
+        )
+        
+        self.button_image_2 = PhotoImage(
+            file=relative_to_assets("button_back.png"))
+        self.button_2 = Button(
+            self,
+            image=self.button_image_2,
+            borderwidth=0,
+            highlightthickness=0,
+            command=lambda: print("button_2 clicked"),
+            relief="flat"
+        )
+        self.button_2.place(
+            x=38.0,
+            y=28.0,
+            width=38.0,
+            height=32.0
+        )
+        
+        self.canvas.create_rectangle(
+            76.0,
+            159.0,
+            92.0,
+            504.0,
+            fill="#D9D9D9",
+            outline="")
+        
+        self.canvas.create_rectangle(
+            712.0,
+            335.0,
+            892.0,
+            338.0,
+            fill="#FF0909",
+            outline="")
+        total = 100
+        self.canvas.create_text(
+            712.0,
+            309.0,
+            anchor="nw",
+            text=f"Total:$ {"aa"}",
+            fill="#FF0909",
+            font=("JetBrainsMono Regular", 24 * -1)
+        )
 
 
