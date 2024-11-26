@@ -19,3 +19,13 @@ pip install proyecto-algoritmos
 ## License
 
 `proyecto-algoritmos` is distributed under the terms of the [MIT](https://spdx.org/licenses/MIT.html) license.
+
+
+# Como leer este codigo
+
+
+1. empezar por main.py
+2. screen_manager.py
+3. db writer
+4. business logic
+5. gui.py

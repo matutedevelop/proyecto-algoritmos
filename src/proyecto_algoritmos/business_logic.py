@@ -67,7 +67,7 @@ def get_process_price(glass_type,process):
 
 def get_date():
     date = time.ctime(time.time())[:]
-    return date[4:7] + date[-5:]
+    return f'{date[4:7]} {date[8:10]}{date[-5:]}'
 
 
 def open_powerbi_inform():
@@ -128,7 +128,7 @@ class Pedido:
 
 
     def pack(self) -> list:
-        return []
+        return [self.id_note.get(),self.quantity,self.glass_type,self.dimensions,self.m2,self.ml,self.includes_glass,self.barrenos,self.barrenos_type,self.sandblasted,self.canteado,self.extra,self.total]
 
 
 
@@ -187,7 +187,7 @@ class note :
       
 
    def pack(Self) -> list :
-        return [Self.date,Self.id,Self.client,Self.note_total,Self.type]
+        return [Self.date,Self.id.get(),Self.client.get(),Self.note_total,Self.type]
 
 
 

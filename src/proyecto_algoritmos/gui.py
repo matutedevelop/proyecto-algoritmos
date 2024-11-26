@@ -5,6 +5,7 @@ from tkinter import ttk, Canvas, Button, PhotoImage,Entry
 from pathlib import Path
 from tkinter.ttk import  Treeview, Combobox,Checkbutton
 import business_logic as bl
+import DB_writer_reader as db
 
 
 OUTPUT_PATH = Path(__file__).parent
@@ -184,7 +185,7 @@ class finance(ttk.Frame):
             borderwidth=0,
             highlightthickness=0,
             bg="#ffffff",
-            command=lambda: print("button_2 clicked"),
+            command=lambda: self.controller.show_screen("expense_input"),
             relief="flat"
         )
         self.button_2.place(
@@ -199,7 +200,7 @@ class finance(ttk.Frame):
         self.button_3 = Button(
             self,
             image=self.finance_button_image_3,
-            command=lambda: print("button_3 clicked"),
+            command=lambda: self.controller.show_screen("delete_note"),
             bg="#ffffff",
             borderwidth=0,
             highlightthickness=0,
@@ -289,7 +290,7 @@ class clients(ttk.Frame):
             image=self.button_image_1,
             borderwidth=0,
             highlightthickness=0,
-            command=lambda: print("button_1 clicked"),
+            command=lambda: print(bl.clients),
             relief="flat",
             bg="#FFFFFF"
         )
@@ -307,7 +308,7 @@ class clients(ttk.Frame):
             image=self.button_image_2,
             borderwidth=0,
             highlightthickness=0,
-            command=lambda: print("button_2 clicked"),
+            command=lambda: self.controller.show_screen("add_abono"),
             relief="flat",
             bg="#FFFFFF"
         )
@@ -325,7 +326,7 @@ class clients(ttk.Frame):
             image=self.button_image_3,
             borderwidth=0,
             highlightthickness=0,
-            command=lambda: print("button_3 clicked"),
+            command=lambda: self.controller.show_screen("add_client"),
             relief="flat",
             bg="#FFFFFF"
         )
@@ -399,7 +400,7 @@ class cotization_view(ttk.Frame):
 
         # Set variables
 
-        self.qty.set(0)
+        self.qty.set(1)
         self.glass_type.set("lun 3")
         self.width.set(1)
         self.length.set(1)
@@ -456,7 +457,7 @@ class cotization_view(ttk.Frame):
         self.entry_image_1 = PhotoImage(
         file=relative_to_assets("cot_entry.png"))
         entry_bg_1 = self.canvas.create_image(
-            240.0,
+            248.0,
             453.5,
             image=self.entry_image_1
             )
@@ -467,7 +468,7 @@ class cotization_view(ttk.Frame):
 
         )
         self.combobox_glass_type.place(
-            x=207.0,
+            x=215.0,
             y=436.0,
             width=66.0,
             height=33.0
@@ -483,7 +484,7 @@ class cotization_view(ttk.Frame):
         )
 
         self.canvas.create_text(
-            210.0,
+            220.0,
             419.0,
             anchor="nw",
             text="Tipo",
@@ -492,7 +493,7 @@ class cotization_view(ttk.Frame):
         )
 
         self.canvas.create_text(
-            331.0,
+            301.0,
             419.0,
             anchor="nw",
             text="Ancho",
@@ -501,7 +502,7 @@ class cotization_view(ttk.Frame):
         )
 
         self.canvas.create_text(
-            409.0,
+            379.0,
             419.0,
             anchor="nw",
             text="Largo",
@@ -510,7 +511,7 @@ class cotization_view(ttk.Frame):
         )
 
         self.canvas.create_text(
-            484.0,
+            454.0,
             419.0,
             anchor="nw",
             text="Vidrio",
@@ -519,7 +520,7 @@ class cotization_view(ttk.Frame):
         )
 
         self.canvas.create_text(
-            636.0,
+            606.0,
             419.0,
             anchor="nw",
             text="Tipo Ø",
@@ -528,7 +529,7 @@ class cotization_view(ttk.Frame):
         )
 
         self.canvas.create_text(
-            715.0,
+            685.0,
             419.0,
             anchor="nw",
             text="Arenado",
@@ -537,7 +538,7 @@ class cotization_view(ttk.Frame):
         )
 
         self.canvas.create_text(
-            786.0,
+            756.0,
             419.0,
             anchor="nw",
             text="Adicional",
@@ -545,7 +546,7 @@ class cotization_view(ttk.Frame):
             font=("JetBrainsMono Regular", 12 * -1)
         )
         self.canvas.create_text(
-            875.0,
+            845.0,
             419.0,
             anchor="nw",
             text="Canteado",
@@ -554,7 +555,7 @@ class cotization_view(ttk.Frame):
         )
 
         self.canvas.create_text(
-            562.0,
+            532.0,
             419.0,
             anchor="nw",
             text="Num. Ø",
@@ -591,12 +592,12 @@ class cotization_view(ttk.Frame):
 
         self.table.bind("<BackSpace>",self.delete_selection)
 
-
+    # ----------------------- FIN  TREEVIWE
 
         self.entry_image_2 = PhotoImage(
             file=relative_to_assets("cot_entry.png"))
         entry_bg_2 = self.canvas.create_image(
-            157.0,
+            167.0,
             453.5,
             image=self.entry_image_2
         )
@@ -609,16 +610,16 @@ class cotization_view(ttk.Frame):
             highlightthickness=0
         )
         self.quantity_entry.place(
-            x=124.0,
+            x=134.0,
             y=436.0,
-            width=66.0,
+            width=30.0,
             height=33.0
         )
 
         self.entry_image_3 = PhotoImage(
             file=relative_to_assets("cot_entry.png"))
         entry_bg_3 = self.canvas.create_image(
-            348.5,
+            328.5,
             453.5,
             image=self.entry_image_3
         )
@@ -631,7 +632,7 @@ class cotization_view(ttk.Frame):
             textvariable=self.width
         )
         self.width_entry.place(
-            x=315.0,
+            x=285.0,
             y=436.0,
             width=67.0,
             height=33.0
@@ -640,7 +641,7 @@ class cotization_view(ttk.Frame):
         self.entry_image_4 = PhotoImage(
             file=relative_to_assets("cot_entry.png"))
         entry_bg_4 = self.canvas.create_image(
-            427.5,
+            407.5,
             453.5,
             image=self.entry_image_4
         )
@@ -653,7 +654,7 @@ class cotization_view(ttk.Frame):
             textvariable=self.length
         )
         self.length_entry.place(
-            x=394.0,
+            x=374.0,
             y=436.0,
             width=67.0,
             height=33.0
@@ -662,7 +663,7 @@ class cotization_view(ttk.Frame):
         self.entry_image_5 = PhotoImage(
             file=relative_to_assets("cot_entry.png"))
         entry_bg_5 = self.canvas.create_image(
-            506.0,
+            486.0,
             453.5,
             image=self.entry_image_5
         )
@@ -671,7 +672,7 @@ class cotization_view(ttk.Frame):
             variable=self.includes_glass
         )
         self.includes_glass_checkbtn.place(
-            x=495.0,
+            x=475.0,
             y=442.0,
             width=20.0,
             height=25.0
@@ -680,7 +681,7 @@ class cotization_view(ttk.Frame):
         self.entry_image_6 = PhotoImage(
             file=relative_to_assets("cot_entry.png"))
         entry_bg_6 = self.canvas.create_image(
-            584.0,
+            564.0,
             453.5,
             image=self.entry_image_6
         )
@@ -693,7 +694,7 @@ class cotization_view(ttk.Frame):
             textvariable=self.num_drills
         )
         self.drill_num_entry.place(
-            x=551.0,
+            x=531.0,
             y=436.0,
             width=66.0,
             height=33.0
@@ -702,7 +703,7 @@ class cotization_view(ttk.Frame):
         self.entry_image_7 = PhotoImage(
             file=relative_to_assets("cot_entry.png"))
         entry_bg_7 = self.canvas.create_image(
-            662.0,
+            642.0,
             453.5,
             image=self.entry_image_7
         )
@@ -712,7 +713,7 @@ class cotization_view(ttk.Frame):
             textvariable= self.drills_type
         )
         self.drill_type_combobox.place(
-            x=622.0,
+            x=602.0,
             y=436.0,
             width=79,
             height=33
@@ -721,13 +722,13 @@ class cotization_view(ttk.Frame):
         self.entry_image_8 = PhotoImage(
             file=relative_to_assets("cot_entry.png"))
         entry_bg_8 = self.canvas.create_image(
-            741.0,
+            721.0,
             453.5,
             image=self.entry_image_8
         )
         self.sandblasted_checkbox = Checkbutton(self,variable=self.is_sandblasted)
         self.sandblasted_checkbox.place(
-            x=730.0,
+            x=710.0,
             y=442.0,
             width=20.0,
             height=25.0
@@ -736,7 +737,7 @@ class cotization_view(ttk.Frame):
         self.entry_image_9 = PhotoImage(
             file=relative_to_assets("cot_entry.png"))
         entry_bg_9 = self.canvas.create_image(
-            820.0,
+            800.0,
             453.5,
             image=self.entry_image_9
         )
@@ -750,7 +751,7 @@ class cotization_view(ttk.Frame):
             textvariable=self.aditional_fee
         )
         self.aditional_fee_entry.place(
-            x=785.0,
+            x=765.0,
             y=436.0,
             width=66.0,
             height=33.0
@@ -759,7 +760,7 @@ class cotization_view(ttk.Frame):
         self.entry_image_10 = PhotoImage(
             file=relative_to_assets("cot_entry.png"))
         entry_bg_5 = self.canvas.create_image(
-            900.0,
+            880.0,
             453.5,
             image=self.entry_image_5
         )
@@ -768,7 +769,7 @@ class cotization_view(ttk.Frame):
             variable=self.is_canteado
         )
         self.canteado_check_btn.place(
-            x=889.0,
+            x=879.0,
             y=442.0,
             width=20.0,
             height=25.0
@@ -787,7 +788,7 @@ class cotization_view(ttk.Frame):
             relief="flat"
         )
         cot_btn_cotizar.place(
-            x=391.99998474121094,
+            x=371.99998474121094,
             y=506.0,
             width=110.52107238769531,
             height=32.97615051269531
@@ -805,7 +806,7 @@ class cotization_view(ttk.Frame):
             relief="flat"
         )
         self.cot_button_add_to_table.place(
-            x=509.99998474121094,
+            x=489.99998474121094,
             y=506.0,
             width=110.52107238769531,
             height=32.97615051269531
@@ -887,44 +888,645 @@ class cotization_view(ttk.Frame):
 class expense_input(ttk.Frame):
     def __init__(self,parent,controller):
         super().__init__(parent)
+        self.controller = controller
+        # Configure frame grid
+        self.grid_rowconfigure(0, weight=1)
+        self.grid_columnconfigure(0, weight=1)
+        
+
+
+        self.date = tk.StringVar()
+        self.date.set(bl.get_date())
+        self.Concept = tk.StringVar()
+        self.amount = tk.DoubleVar()
+        self.amount.set(0)
+
+
+        self.init_screen()
+
+
 
     def init_screen(self):
-        pass
+        self.canvas = Canvas(
+            self,
+            bg = "#FFFFFF",
+            height = 627,
+            width = 1012,
+            bd = 0,
+            highlightthickness = 0,
+            relief = "ridge"
+        )
+
+        self.canvas.place(x = 0, y = 0)
+        self.image_image_1 = PhotoImage(
+            file=relative_to_assets("fondo.png"))
+        image_1 = self.canvas.create_image(
+            506.0001220703125,
+            313.0,
+            image=self.image_image_1
+        )
+
+        self.canvas.create_text(
+            72.0,
+            72.0,
+            anchor="nw",
+            text="Ingresar Gasto",
+            fill="#000000",
+            font=("JetBrainsMono Regular", 48 * -1)
+        )
+
+        self.canvas.create_rectangle(
+            74.9984130859375,
+            131.69003295898438,
+            529.0010070800781,
+            132.69003295898438,
+            fill="#000000",
+            outline="")
+
+        self.button_image_1 = PhotoImage(
+            file=relative_to_assets("button_back.png"))
+        self.button_1 = Button(
+            self,
+            image=self.button_image_1,
+            borderwidth=0,
+            highlightthickness=0,
+            command=lambda: self.controller.reset_app(),
+            relief="flat",
+            bg="#FFFFFF"
+        )
+        self.button_1.place(
+            x=38.0,
+            y=38.0,
+            width=38.0,
+            height=32.0
+        )
+
+        self.canvas.create_text(
+            136.0,
+            230.0,
+            anchor="nw",
+            text="Fecha",
+            fill="#000000",
+            font=("JetBrainsMono Regular", 12 * -1)
+        )
+
+        self.entry_image_1 = PhotoImage(
+            file=relative_to_assets("cot_entry.png"))
+        entry_bg_1 = self.canvas.create_image(
+            171.5,
+            263.5,
+            image=self.entry_image_1
+        )
+        self.entry_1 = Entry(
+            self,
+            bd=0,
+            bg="#FFFFFF",
+            fg="#000716",
+            highlightthickness=0,
+            textvariable = self.date
+        )
+        self.entry_1.place(
+            x=138.0,
+            y=246.0,
+            width=67.0,
+            height=33.0
+        )
+
+        self.canvas.create_text(
+            225.0,
+            230.0,
+            anchor="nw",
+            text="Concepto",
+            fill="#000000",
+            font=("JetBrainsMono Regular", 12 * -1)
+        )
+
+        self.entry_image_2 = PhotoImage(
+            file=relative_to_assets("cot_entry.png"))
+        entry_bg_2 = self.canvas.create_image(
+            269.5,
+            263.5,
+            image=self.entry_image_2
+        )
+        self.combo = Entry(self ,textvariable=self.Concept)
+        self.combo.place(
+            x=227.0,
+            y=246.0,
+            width=85.0,
+            height=33.0
+        )
+
+        self.canvas.create_text(
+            331.0,
+            230.0,
+            anchor="nw",
+            text="Monto",
+            fill="#000000",
+            font=("JetBrainsMono Regular", 12 * -1)
+        )
+
+        self.entry_image_3 = PhotoImage(
+            file=relative_to_assets("cot_entry.png"))
+        entry_bg_3 = self.canvas.create_image(
+            376.5,
+            263.5,
+            image=self.entry_image_3
+        )
+        self.entry_3 = Entry(
+            self,
+            bd=0,
+            bg="#D6F2FC",
+            fg="#000716",
+            highlightthickness=0,
+            textvariable=self.amount
+        )
+        self.entry_3.place(
+            x=334.0,
+            y=246.0,
+            width=85.0,
+            height=33.0
+        )
+
+        self.button_image_2 = PhotoImage(
+            file=relative_to_assets("conf_confirmar.png"))
+        self.button_2 = Button(
+            self,
+            image=self.button_image_2,
+            borderwidth=0,
+            highlightthickness=0,
+            command=lambda: self.add_to_db(),
+            relief="flat",
+            bg="#FFFFFF"
+        )
+        self.button_2.place(
+            x=169.99998474121094,
+            y=338.0,
+            width=198.65003967285156,
+            height=59.02384948730469
+        )
+    def add_to_db(self):
+        direction = bl.directions["ruta_gastos"]
+        data = [self.date.get(),self.Concept.get(),self.amount.get()]
+        db.csv_writer(direction,data)
 
 
 class delete_note(ttk.Frame):
     def __init__(self,parent,controller):
         super().__init__(parent)
+        self.controller = controller
+        # Configure frame grid
+        self.grid_rowconfigure(0, weight=1)
+        self.grid_columnconfigure(0, weight=1)
+        
+        self.note_id = tk.StringVar()
+
+        self.init_screen()
+
+    
+
+
+
+
+        
 
     def init_screen(self):
-        pass
+        self.canvas = Canvas(
+        self,
+        bg = "#FFFFFF",
+        height = 627,
+        width = 1012,
+        bd = 0,
+        highlightthickness = 0,
+        relief = "ridge"
+        )
+
+        self.canvas.place(x = 0, y = 0)
+        image_image_1 = PhotoImage(
+            file=relative_to_assets("logo.png"))
+        image_1 = self.canvas.create_image(
+            506.0001220703125,
+            313.0,
+            image=image_image_1
+        )
+
+        self.canvas.create_text(
+            72.0,
+            72.0,
+            anchor="nw",
+            text="Eliminar Nota",
+            fill="#000000",
+            font=("JetBrainsMono Regular", 48 * -1)
+        )
+
+        self.canvas.create_rectangle(
+            74.9984130859375,
+            131.69003295898438,
+            529.0010070800781,
+            132.69003295898438,
+            fill="#000000",
+            outline="")
+
+        self.button_image_1 = PhotoImage(
+            file=relative_to_assets("button_back.png"))
+        self.button_1 = Button(
+            self,
+            image=self.button_image_1,
+            borderwidth=0,
+            highlightthickness=0,
+            command=lambda: self.controller.reset_app(),
+            relief="flat"
+            )
+        self.button_1.place(
+            x=38.0,
+            y=38.0,
+            width=38.0,
+            height=32.0
+        )
+
+        self.canvas.create_text(
+            225.0,
+            230.0,
+            anchor="nw",
+            text="Id",
+            fill="#000000",
+            font=("JetBrainsMono Regular", 12 * -1)
+        )
+
+        self.entry_image_1 = PhotoImage(
+            file=relative_to_assets("cot_entry.png"))
+        entry_bg_1 = self.canvas.create_image(
+            269.5,
+            263.5,
+            image=self.entry_image_1
+        )
+        self.entry_1 = Entry(
+            self,
+            bd=0,
+            bg="#FFFFFF",
+            fg="#000716",
+            highlightthickness=0,
+            textvariable = self.note_id
+        )
+        self.entry_1.place(
+            x=227.0,
+            y=246.0,
+            width=85.0,
+            height=33.0
+        )
+
+        self.button_image_2 = PhotoImage(
+            file=relative_to_assets("button_eliminar_nota.png"))
+        self.button_2 = Button(
+            self,
+            image=self.button_image_2,
+            borderwidth=0,
+            highlightthickness=0,
+            command=lambda: self.delete_from_db(),
+            relief="flat"
+        )
+        self.button_2.place(
+            x=169.99998474121094,
+            y=338.0,
+            width=208.65003967285156,
+            height=59.02384948730469
+        )
+    def delete_from_db(self):
+        dir1 = bl.directions["ruta_notas"]
+        dir2 = bl.directions["ruta_pedidos"]
+        column = "id nota"
+        value = self.note_id.get()
+
+        db.csv_deleter(dir1,column,int(value))
+        db.csv_deleter(dir2,column,int(value))
 
 # pantallas secundarias administrar clientes y precios
 
 
-class view_delete_client(ttk.Frame):
+class add_client(ttk.Frame):
     def __init__(self,parent,controller):
         super().__init__(parent)
+        self.controller = controller
+        # Configure frame grid
+        self.grid_rowconfigure(0, weight=1)
+        self.grid_columnconfigure(0, weight=1)
+
+
+        self.init_screen()
 
     def init_screen(self):
-        pass
 
-class create_order(ttk.Frame):
+
+        self.new_client = tk.StringVar()
+        self.new_client.set("nuevo cliente")
+
+        self.canvas = Canvas(
+            self,
+            bg = "#FFFFFF",
+            height = 627,
+            width = 1012,
+            bd = 0,
+            highlightthickness = 0,
+            relief = "ridge"
+        )
+        self.canvas.place(x = 0, y = 0)
+        self.image_image_1 = PhotoImage(
+            file=relative_to_assets("fondo.png"))
+        image_1 = self.canvas.create_image(
+            506.0001220703125,
+            313.0,
+            image=self.image_image_1
+        )
+        self.canvas.create_text(
+            72.0,
+            72.0,
+            anchor="nw",
+            text="Crear Cliente",
+            fill="#000000",
+            font=("JetBrainsMono Regular", 48 * -1)
+        )
+        self.canvas.create_rectangle(
+            74.9984130859375,
+            131.69003295898438,
+            529.0010070800781,
+            132.69003295898438,
+            fill="#000000",
+            outline="")
+        self.canvas.create_text(
+            225.0,
+            230.0,
+            anchor="nw",
+            text="Cliente",
+            fill="#000000",
+            font=("JetBrainsMono Regular", 12 * -1)
+        )
+        self.entry_image_2 = PhotoImage(
+            file=relative_to_assets("cot_entry.png"))
+        entry_bg_2 = self.canvas.create_image(
+            269.5,
+            263.5,
+            image=self.entry_image_2
+        )
+        self.client_name_entry = Entry(
+            self,
+            textvariable=self.new_client,
+            bd=0,
+            bg="#D6F2FC",
+            fg="#000716",
+            highlightthickness=0,
+            
+            
+            )
+        self.client_name_entry.place(
+            x=227.0,
+            y=246.0,
+            width=85.0,
+            height=33.0
+        )
+  
+        
+        self.button_image_2 = PhotoImage(
+            file=relative_to_assets("conf_confirmar.png"))
+        self.button_2 = Button(
+            self,
+            image=self.button_image_2,
+            borderwidth=0,
+            highlightthickness=0,
+            command=lambda: self.add_to_db(),
+            relief="flat",
+            bg="#FFFFFF"
+        )
+        self.button_2.place(
+            x=169.99998474121094,
+            y=338.0,
+            width=198.65003967285156,
+            height=59.02384948730469
+        )
+
+        self.button_image_1 = PhotoImage(
+            file=relative_to_assets("button_back.png"))
+        self.button_1 = Button(
+            self,
+            image=self.button_image_1,
+            borderwidth=0,
+            highlightthickness=0,
+            command=lambda: self.controller.reset_app(),
+            relief="flat",
+            bg="#FFFFFF"
+        )
+        self.button_1.place(
+            x=38.0,
+            y=38.0,
+            width=38.0,
+            height=32.0
+        )
+    def add_to_db(self):
+        direction = bl.directionections["ruta_clientes"]
+        db.csv_writer(direction,self.new_client.get()) 
+
+class add_abono(ttk.Frame):
     def __init__(self,parent,controller):
         super().__init__(parent)
+        self.controller = controller
+        # Configure frame grid
+        self.grid_rowconfigure(0, weight=1)
+        self.grid_columnconfigure(0, weight=1)
+        
+
+
+        self.date = tk.StringVar()
+        self.date.set(bl.get_date())
+        self.clients  = bl.clients
+        self.client_selected = tk.StringVar()
+        self.amount = tk.DoubleVar()
+        self.amount.set(0)
+
+
+        self.init_screen()
 
 
 
     def init_screen(self):
-        pass
+        self.canvas = Canvas(
+            self,
+            bg = "#FFFFFF",
+            height = 627,
+            width = 1012,
+            bd = 0,
+            highlightthickness = 0,
+            relief = "ridge"
+        )
+
+        self.canvas.place(x = 0, y = 0)
+        self.image_image_1 = PhotoImage(
+            file=relative_to_assets("fondo.png"))
+        image_1 = self.canvas.create_image(
+            506.0001220703125,
+            313.0,
+            image=self.image_image_1
+        )
+
+        self.canvas.create_text(
+            72.0,
+            72.0,
+            anchor="nw",
+            text="Ingresar Abono",
+            fill="#000000",
+            font=("JetBrainsMono Regular", 48 * -1)
+        )
+
+        self.canvas.create_rectangle(
+            74.9984130859375,
+            131.69003295898438,
+            529.0010070800781,
+            132.69003295898438,
+            fill="#000000",
+            outline="")
+
+        self.button_image_1 = PhotoImage(
+            file=relative_to_assets("button_back.png"))
+        self.button_1 = Button(
+            self,
+            image=self.button_image_1,
+            borderwidth=0,
+            highlightthickness=0,
+            command=lambda: self.controller.reset_app(),
+            relief="flat",
+            bg="#FFFFFF"
+        )
+        self.button_1.place(
+            x=38.0,
+            y=38.0,
+            width=38.0,
+            height=32.0
+        )
+
+        self.canvas.create_text(
+            136.0,
+            230.0,
+            anchor="nw",
+            text="Fecha",
+            fill="#000000",
+            font=("JetBrainsMono Regular", 12 * -1)
+        )
+
+        self.entry_image_1 = PhotoImage(
+            file=relative_to_assets("cot_entry.png"))
+        entry_bg_1 = self.canvas.create_image(
+            171.5,
+            263.5,
+            image=self.entry_image_1
+        )
+        self.entry_1 = Entry(
+            self,
+            bd=0,
+            bg="#FFFFFF",
+            fg="#000716",
+            highlightthickness=0,
+            textvariable = self.date
+        )
+        self.entry_1.place(
+            x=138.0,
+            y=246.0,
+            width=67.0,
+            height=33.0
+        )
+
+        self.canvas.create_text(
+            225.0,
+            230.0,
+            anchor="nw",
+            text="Cliente",
+            fill="#000000",
+            font=("JetBrainsMono Regular", 12 * -1)
+        )
+
+        self.entry_image_2 = PhotoImage(
+            file=relative_to_assets("cot_entry.png"))
+        entry_bg_2 = self.canvas.create_image(
+            269.5,
+            263.5,
+            image=self.entry_image_2
+        )
+        self.combo = Combobox(self, values=self.clients,textvariable=self.client_selected)
+        self.combo.place(
+            x=227.0,
+            y=246.0,
+            width=85.0,
+            height=33.0
+        )
+
+        self.canvas.create_text(
+            331.0,
+            230.0,
+            anchor="nw",
+            text="Monto",
+            fill="#000000",
+            font=("JetBrainsMono Regular", 12 * -1)
+        )
+
+        self.entry_image_3 = PhotoImage(
+            file=relative_to_assets("cot_entry.png"))
+        entry_bg_3 = self.canvas.create_image(
+            376.5,
+            263.5,
+            image=self.entry_image_3
+        )
+        self.entry_3 = Entry(
+            self,
+            bd=0,
+            bg="#D6F2FC",
+            fg="#000716",
+            highlightthickness=0,
+            textvariable=self.amount
+        )
+        self.entry_3.place(
+            x=334.0,
+            y=246.0,
+            width=85.0,
+            height=33.0
+        )
+
+        self.button_image_2 = PhotoImage(
+            file=relative_to_assets("conf_confirmar.png"))
+        self.button_2 = Button(
+            self,
+            image=self.button_image_2,
+            borderwidth=0,
+            highlightthickness=0,
+            command=lambda: self.add_to_db(),
+            relief="flat",
+            bg="#FFFFFF"
+        )
+        self.button_2.place(
+            x=169.99998474121094,
+            y=338.0,
+            width=198.65003967285156,
+            height=59.02384948730469
+        )
+
+
+    def add_to_db(self):
+            direction = bl.directions["ruta_abonos"]
+            data = [self.date.get(),self.client_selected.get(),self.amount.get()]
+            db.csv_writer(direction,data)
         
         
 class note_summary(ttk.Frame):
     def __init__(self,parent,controller):
         super().__init__(parent)
+        self.controller = controller
         self.id = tk.IntVar()
         self.id.set(0)
+        self.id = tk.IntVar()
+        self.client = tk.StringVar()
+        self.id.set(0)
         self.init_screen()
+
+
+
+
+
+        
 
 
     def init_screen(self):
@@ -1023,7 +1625,8 @@ class note_summary(ttk.Frame):
             bd=0,
             bg="#FFFFFF",
             fg="#000716",
-            highlightthickness=0
+            highlightthickness=0,
+            textvariable= self.id
         )
         self.entry_1.place(
             x=753.0,
@@ -1048,11 +1651,12 @@ class note_summary(ttk.Frame):
             251.5,
             image=self.entry_image_2
         )
-        self.entry_2 = Combobox(
+        self.Combo_clients = Combobox(
             self,
-            values= bl.clients
+            values= bl.clients,
+            textvariable= self.client
         )
-        self.entry_2.place(
+        self.Combo_clients.place(
             x=753.0,
             y=236.0,
             width=85.0,
@@ -1061,16 +1665,16 @@ class note_summary(ttk.Frame):
         
         self.button_image_1 = PhotoImage(
             file=relative_to_assets("conf_confirmar.png"))
-        self.button_1 = Button(
+        self.confirm_order_button = Button(
             self,
             image=self.button_image_1,
             borderwidth=0,
             highlightthickness=0,
-            command=lambda: print("button_1 clicked"),
+            command=lambda: self.append_to_db(),
             relief="flat",
             bg="#FFFFFF"
         )
-        self.button_1.place(
+        self.confirm_order_button.place(
             x=696.9999847412109,
             y=382.0,
             width=198.65003967285156,
@@ -1084,7 +1688,7 @@ class note_summary(ttk.Frame):
             image=self.button_image_2,
             borderwidth=0,
             highlightthickness=0,
-            command=lambda: print("button_2 clicked"),
+            command=lambda: self.controller.reset_app() ,
             relief="flat",
             bg="#FFFFFF"
         )
@@ -1125,13 +1729,21 @@ class note_summary(ttk.Frame):
             font=("JetBrainsMono Regular", 24 * -1)
         )
 
-
-
     def add_to_table(self):
        orders = bl.orders_list
        for o in orders:
             
             data = [o.quantity,o.description,o.unit_price,o.total]
             self.table.insert(parent='',index = tk.END,values=data)
+    
+    def append_to_db(self):
 
+        bl.current_note.id = self.id
+        bl.current_note.client = self.client
+        dir_notes = bl.directions["ruta_notas"]
+        dir_orders = bl.directions["ruta_pedidos"]
+        db.csv_writer(dir_notes,bl.current_note.pack())
 
+        for v in bl.current_note.products:
+            v.id_note = self.id
+            db.csv_writer(dir_orders,v.pack())

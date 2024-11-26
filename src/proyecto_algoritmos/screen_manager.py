@@ -22,8 +22,8 @@ class manager(tk.Tk):
         self.frames = {}
         screen_classes = [
             menu, finance, summary_panel, cotization_view,
-            expense_input, delete_note,view_delete_client, 
-            create_order,note_summary,clients
+            expense_input, delete_note,add_client, 
+            add_abono,note_summary,clients
         ]
 
         

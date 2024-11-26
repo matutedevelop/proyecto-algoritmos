@@ -19,5 +19,4 @@ def csv_deleter(dir,column,value):
 
 
 
-csv_writer(directions['ruta_clientes'],['gonzalo'])
-csv_deleter(directions['ruta_notas'],'id nota',1)
+
