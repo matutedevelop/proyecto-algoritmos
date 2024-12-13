@@ -836,7 +836,7 @@ class cotization_view(ttk.Frame):
                 self.includes_glass.get(),self.num_drills.get(),
                 self.drills_type.get(),self.is_sandblasted.get(),
                 self.is_canteado.get(),self.aditional_fee.get()]
-
+        # print(data)
         self.table.insert(parent='',index=tk.END,values=data)
 
     def delete_selection(self,_):
@@ -855,12 +855,12 @@ class cotization_view(ttk.Frame):
             v[0] = int(v[0])
             v[2] = float(v[2])
             v[3] = float(v[3])
-            v[4] = bool(v[4])
+            v[4] = eval(v[4])
             v[5] = int(v[5])
-            v[7] = bool(v[7])
-            v[8] = bool(v[8])
+            v[7] = eval(v[7])
+            v[8] = eval(v[8])
             v[9] = float(v[9])
-
+        # print(values)
 
         try:
             pass
@@ -880,7 +880,7 @@ class cotization_view(ttk.Frame):
         bl.current_note = bl.note(bl.orders_list)
         bl.current_note.get_resume()
 
-        self.controller.frames["note_summary"].add_total_text()
+        self.controller.frames["note_summary"].modify_total_text()
         self.controller.frames["note_summary"].add_to_table()
         self.controller.show_screen("note_summary")
 
@@ -1320,7 +1320,7 @@ class add_client(ttk.Frame):
             height=32.0
         )
     def add_to_db(self):
-        direction = bl.directionections["ruta_clientes"]
+        direction = bl.directions["ruta_clientes"]
         db.csv_writer(direction,self.new_client.get()) 
 
 class add_abono(ttk.Frame):
@@ -1550,33 +1550,41 @@ class note_summary(ttk.Frame):
         )
         
         self.image_image_2 = PhotoImage(
-            file=relative_to_assets("logo.png"))
+            file=relative_to_assets("lolgo.png"))
         image_2 = self.canvas.create_image(
-            875.0,
-            84.0,
+            620.0,
+            100.0,
             image=self.image_image_2
         )
         
         self.canvas.create_text(
-            272.0,
+            290.0,
             46.0,
             anchor="nw",
-            text="Confirmar pedido",
+            text="Cotización",
             fill="#000000",
-            font=("JetBrainsMono Regular", 48 * -1)
+            font=("Aptos ", 48 * -1)
+        )
+        self.canvas.create_text(
+            140.0,
+            132.5,
+            anchor="nw",
+            text=bl.get_date(),
+            fill="#000000",
+            font=("JetBrainsMono Regular", 20 * -1)
         )
         
-        self.canvas.create_rectangle(
-            278.0,
-            108.69003295898438,
-            732.0025939941406,
-            109.69003295898438,
-            fill="#000000",
-            outline="")
+        # self.canvas.create_rectangle(
+        #     278.0,
+        #     108.69003295898438,
+        #     732.0025939941406,
+        #     109.69003295898438,
+        #     fill="#000000",
+        #     outline="")
         
         self.canvas.create_text(
-            751.0,
-            158.0,
+            297.0,
+            113.0,
             anchor="nw",
             text="ID",
             fill="#000000",
@@ -1602,7 +1610,7 @@ class note_summary(ttk.Frame):
 
             x=100,
             y=170,
-            width=400,
+            width=600,
             height=300
 
 
@@ -1616,8 +1624,8 @@ class note_summary(ttk.Frame):
         self.entry_image_1 = PhotoImage(
             file=relative_to_assets("cot_entry.png"))
         entry_bg_1 = self.canvas.create_image(
-            786.5,
-            191.5,
+            307.0,
+            146.0,
             image=self.entry_image_1
         )
         self.entry_1 = Entry(
@@ -1629,15 +1637,15 @@ class note_summary(ttk.Frame):
             textvariable= self.id
         )
         self.entry_1.place(
-            x=753.0,
-            y=174.0,
+            x=270.0,
+            y=130.0,
             width=67.0,
             height=33.0
         )
         
         self.canvas.create_text(
-            751.0,
-            218.0,
+            380.0,
+            113.0,
             anchor="nw",
             text="Cliente",
             fill="#000000",
@@ -1647,8 +1655,8 @@ class note_summary(ttk.Frame):
         self.entry_image_2 = PhotoImage(
             file=relative_to_assets("cot_entry.png"))
         entry_bg_2 = self.canvas.create_image(
-            795.5,
-            251.5,
+            410.5,
+            146.5,
             image=self.entry_image_2
         )
         self.Combo_clients = Combobox(
@@ -1657,8 +1665,8 @@ class note_summary(ttk.Frame):
             textvariable= self.client
         )
         self.Combo_clients.place(
-            x=753.0,
-            y=236.0,
+            x=370.0,
+            y=130.0,
             width=85.0,
             height=33.0
         )
@@ -1675,8 +1683,8 @@ class note_summary(ttk.Frame):
             bg="#FFFFFF"
         )
         self.confirm_order_button.place(
-            x=696.9999847412109,
-            y=382.0,
+            x=750.9999847412109,
+            y=282.0,
             width=198.65003967285156,
             height=59.02384948730469
         )
@@ -1688,7 +1696,7 @@ class note_summary(ttk.Frame):
             image=self.button_image_2,
             borderwidth=0,
             highlightthickness=0,
-            command=lambda: self.controller.reset_app() ,
+            command=lambda: self.reset_app_empty_table() ,
             relief="flat",
             bg="#FFFFFF"
         )
@@ -1708,26 +1716,31 @@ class note_summary(ttk.Frame):
             outline="")
         
         self.canvas.create_rectangle(
-            712.0,
-            335.0,
-            892.0,
-            338.0,
+            330.0,
+            507.0,
+            470.0,
+            513.0,
             fill="#FF0909",
             outline="")
+        self.total_text = self.canvas.create_text(
+            330.0,
+            480.0,
+            anchor="nw",
+            text=f"Total:$ 000",
+            fill="#FF0909",
+            font=("JetBrainsMono Regular", 24 * -1)
+        )
         
         
         
 
-    def add_total_text(self):
+    def modify_total_text(self):
         total = bl.current_note.note_total
-        self.canvas.create_text(
-            712.0,
-            309.0,
-            anchor="nw",
-            text=f"Total:$ {total}",
-            fill="#FF0909",
-            font=("JetBrainsMono Regular", 24 * -1)
-        )
+        self.canvas.itemconfig(self.total_text, text = f"Total: ${total}" )
+        # self.canvas.create_text(
+
+
+
 
     def add_to_table(self):
        orders = bl.orders_list
@@ -1747,3 +1760,7 @@ class note_summary(ttk.Frame):
         for v in bl.current_note.products:
             v.id_note = self.id
             db.csv_writer(dir_orders,v.pack())
+    def reset_app_empty_table(self):
+        for item in self.table.get_children():
+            self.table.delete(item)
+            self.controller.reset_app()

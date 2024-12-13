@@ -66,9 +66,10 @@ def get_process_price(glass_type,process):
 
 
 def get_date():
-    date = time.ctime(time.time())[:]
-    return f'{date[4:7]} {date[8:10]}{date[-5:]}'
-
+    current_time = time.localtime()
+    # Formatear la fecha en formato corto (DD/MM/AAAA)
+    short_date = time.strftime("%d/%m/%Y", current_time)
+    return short_date
 
 def open_powerbi_inform():
     link = "https://app.powerbi.com/view?r=eyJrIjoiYTY0ZDc3MTktMWFlZC00NjY1LTkzZGMtODllZjk0NjE4NDkzIiwidCI6IjZmMDM0OGYyLWU0OTgtNDVjOS04NGY0LWM2ZDgxZGNmZmRmZSIsImMiOjR9"
@@ -93,7 +94,7 @@ class Pedido:
         self.id_note ='XXXXXX'
         self.quantity = quantity
         self.glass_type = glass_type
-        self.dimensions = str(length) + 'x' + str(width)
+        self.dimensions = str(length) + 'm x' + str(width) +'m'
         self.m2 = length * width
         self.ml = 2 * length + 2 * width
         self.includes_glass = includes_glass
