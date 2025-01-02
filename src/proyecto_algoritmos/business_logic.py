@@ -119,7 +119,7 @@ class Pedido:
         total += self.extra
         total *= self.quantity
 
-        self.total = total
+        self.total = round(total,2)
 
 
 
@@ -129,7 +129,9 @@ class Pedido:
 
 
     def pack(self) -> list:
-        return [self.id_note.get(),self.quantity,self.glass_type,self.dimensions,self.m2,self.ml,self.includes_glass,self.barrenos,self.barrenos_type,self.sandblasted,self.canteado,self.extra,self.total]
+        return [self.id_note.get(),self.quantity,self.glass_type,self.dimensions,self.m2,self.ml,
+                self.includes_glass,self.barrenos,self.barrenos_type,self.sandblasted,self.canteado,
+                self.extra,self.total]
 
 
 
@@ -148,7 +150,7 @@ class note :
         self.date = get_date()
         self.id = 'XXXXXX'
         self.client = 'client'
-        self.type = 'efe'
+        self.pay_method = 'efe'
         self.products = products
     # calcular el total de la lista
         note_total = 0
@@ -165,9 +167,9 @@ class note :
    def get_resume(self) -> tuple :
       # build up the description of the pedido , aka product (see resumen cotizacion on the mock up)
       for product in self.products:
-          description = product.glass_type + ' ' + product.dimensions
+          description = product.glass_type + 'mm    ' + product.dimensions
           if product.sandblasted: description += ' ,arenado'
-          if product.canteado: description += ' ,canteado'
+          if product.canteado: description += ' ,C.P.P.B'
           if product.barrenos > 0:  description += ',' + str(product.barrenos) + ' barrenos'
           if not product.includes_glass: description += ', (maq)'
 
@@ -176,7 +178,7 @@ class note :
           # calculate unitary price of product
           # Creo que el problema es que estoy llamando self.total y self.quantity en vez de product.total y product.quantity    
           if product.quantity != 0:
-            product.unit_price = product.total / product.quantity
+            product.unit_price = round((product.total / product.quantity),2)
             
           else:
             raise ValueError("la cantidad no puede ser cero")
@@ -188,7 +190,7 @@ class note :
       
 
    def pack(Self) -> list :
-        return [Self.date,Self.id.get(),Self.client.get(),Self.note_total,Self.type]
+        return [Self.date,Self.id.get(),Self.client.get(),Self.note_total,Self.pay_method.get()]
 
 
 

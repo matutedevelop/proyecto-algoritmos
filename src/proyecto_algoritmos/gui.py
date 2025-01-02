@@ -368,12 +368,6 @@ class clients(ttk.Frame):
 
 # pa   ntallas secundarias / datos y finanzas
 
-class summary_panel(ttk.Frame):
-    def __init__(self,parent,controller):
-        super().__init__(parent)
-
-    def init_screen(self):
-        pass
 
 
 class cotization_view(ttk.Frame):
@@ -496,7 +490,7 @@ class cotization_view(ttk.Frame):
             301.0,
             419.0,
             anchor="nw",
-            text="Ancho",
+            text="Ancho (m)",
             fill="#000000",
             font=("JetBrainsMono Regular", 12 * -1)
         )
@@ -505,7 +499,7 @@ class cotization_view(ttk.Frame):
             379.0,
             419.0,
             anchor="nw",
-            text="Largo",
+            text="Largo (m)",
             fill="#000000",
             font=("JetBrainsMono Regular", 12 * -1)
         )
@@ -1516,10 +1510,13 @@ class note_summary(ttk.Frame):
         super().__init__(parent)
         self.controller = controller
         self.id = tk.IntVar()
-        self.id.set(0)
         self.id = tk.IntVar()
         self.client = tk.StringVar()
+        self.pay_method = tk.StringVar()
         self.id.set(0)
+        self.id.set(0)
+        self.pay_method.set("efectivo")
+        self.client.set("I.Santillan")
         self.init_screen()
 
 
@@ -1552,7 +1549,7 @@ class note_summary(ttk.Frame):
         self.image_image_2 = PhotoImage(
             file=relative_to_assets("lolgo.png"))
         image_2 = self.canvas.create_image(
-            620.0,
+            630.0,
             100.0,
             image=self.image_image_2
         )
@@ -1603,10 +1600,14 @@ class note_summary(ttk.Frame):
 
         for c in columns:
             self.table.heading(c, text=c)
-            self.table.column(c, width=0)
-            self.table.column(c, stretch=True)
+        self.table.column("CANTIDAD", width=100, anchor='center')
+        self.table.column("Descripcion", width=200, anchor='w')
+        self.table.column("P. UNITARIO", width=100, anchor='e')
+        self.table.column("IMPORTE", width=100, anchor='e')
+        
+            
 
-            self.table.place(
+        self.table.place(
 
             x=100,
             y=170,
@@ -1667,7 +1668,18 @@ class note_summary(ttk.Frame):
         self.Combo_clients.place(
             x=370.0,
             y=130.0,
-            width=85.0,
+            width=90.0,
+            height=33.0
+        )
+        self.Combo_pay_method = Combobox(
+            self,
+            values= ["Efectivo","Transferencia","Credito 15 dias","Credito 21 dias","No especifica"],
+            textvariable= self.pay_method
+        )
+        self.Combo_pay_method.place(
+            x=475.0,
+            y=130.0,
+            width=93.0,
             height=33.0
         )
         
@@ -1708,7 +1720,6 @@ class note_summary(ttk.Frame):
         )
         
         self.canvas.create_rectangle(
-            76.0,
             159.0,
             92.0,
             504.0,
@@ -1753,9 +1764,11 @@ class note_summary(ttk.Frame):
 
         bl.current_note.id = self.id
         bl.current_note.client = self.client
+        bl.current_note.pay_method = self.pay_method
         dir_notes = bl.directions["ruta_notas"]
         dir_orders = bl.directions["ruta_pedidos"]
         db.csv_writer(dir_notes,bl.current_note.pack())
+        self.confirmation_popup()
 
         for v in bl.current_note.products:
             v.id_note = self.id
@@ -1764,3 +1777,12 @@ class note_summary(ttk.Frame):
         for item in self.table.get_children():
             self.table.delete(item)
             self.controller.reset_app()
+
+    def confirmation_popup(self):
+        popup = tk.Toplevel()
+        popup.title("Popup Window")
+        popup.geometry("400x300")
+        label = ttk.Label(popup, text="Se ha añadido la orden con exito",font="JetBrainsMono Regular")
+        label.pack(padx=20, pady=20)
+        button = ttk.Button(popup, text="Close", command=popup.destroy)
+        button.pack(pady=10)
