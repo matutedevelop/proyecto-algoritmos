@@ -395,7 +395,7 @@ class cotization_view(ttk.Frame):
         # Set variables
 
         self.qty.set(1)
-        self.glass_type.set("lun 3")
+        self.glass_type.set("Lun 3")
         self.width.set(1)
         self.length.set(1)
         self.includes_glass.set(True)
@@ -1719,12 +1719,13 @@ class note_summary(ttk.Frame):
             height=32.0
         )
         
-        self.canvas.create_rectangle(
-            159.0,
-            92.0,
-            504.0,
-            fill="#D9D9D9",
-            outline="")
+        # self.canvas.create_rectangle(
+        #     159.0,
+        #     92.0,
+        #     504.0,
+
+        #     fill="#D9D9D9",
+        #     outline="")
         
         self.canvas.create_rectangle(
             330.0,
@@ -1740,6 +1741,15 @@ class note_summary(ttk.Frame):
             text=f"Total:$ 000",
             fill="#FF0909",
             font=("JetBrainsMono Regular", 24 * -1)
+        )
+        self.vigencia = self.canvas.create_text(
+            100.0,
+            100.0,
+            anchor="nw",
+            text="vigencia: 10 dias",
+            fill="#000000",
+            font=("JetBrainsMono Regular", 18 * -1)
+
         )
         
         
@@ -1782,7 +1792,7 @@ class note_summary(ttk.Frame):
         popup = tk.Toplevel()
         popup.title("Popup Window")
         popup.geometry("400x300")
-        label = ttk.Label(popup, text="Se ha añadido la orden con exito",font="JetBrainsMono Regular")
+        label = ttk.Label(popup, text="Se ha añadido la orden con exito",font=("JetBrainsMono",18,"normal"))
         label.pack(padx=20, pady=20)
         button = ttk.Button(popup, text="Close", command=popup.destroy)
         button.pack(pady=10)
